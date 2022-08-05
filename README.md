@@ -91,7 +91,7 @@
     * api建立chk_acc.php
     * api建立chk_pw.php
     * table建立login.php畫面使用ajax不使用form表單
-        * ```function reset(){$('#acc,#pw').val("")};
+        * `function reset(){$('#acc,#pw').val("")};`
 
         * ```function login(){
             let acc=$("#acc").val();
