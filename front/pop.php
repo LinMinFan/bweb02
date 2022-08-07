@@ -1,78 +1,93 @@
+<style>
+    .modal{
+        position: absolute;
+        height: 400px;
+        width: 500px;
+        left: 200px;
+        top: 100px;
+        overflow: auto;
+        background: #000000aa;
+        color:#fff;
+        z-index: 10;
+    }
+</style>
 <fieldset>
-    <legend>目前位置：首頁>分類網誌><span id="header">人氣文章區</span></legend>
-    <table id="pop">
-        <tr>
-            <td width="30%">標題</td>
-            <td width="50%">內容</td>
-            <td width="20%">人氣</td>
-        </tr>
+    <legend><p>目前位置：首頁><span >人氣文章</span></p></legend>
+
+<table style="width:80%;margin:0 auto">
+<tr>
+    <td style="width:25%;">標題</td>
+    <td style="width:50%;">內容</td>
+    <td >人氣</td>
+</tr>
+<?php
+$p=$_GET['p']??1;
+$div=5;
+$countns=$news->math('count','id',$sh);
+$pages=ceil(($countns/$div));
+$start=($p-1)*$div;
+$pre=(($p-1)>0)?($p-1):1;
+$next=(($p+1)<=$pages)?($p+1):$pages;
+$nns=$news->all($sh,"ORDER BY `good` DESC limit $start,$div");
+foreach ($nns as $key => $nn) {
+?>
+<tr>
+    <td class="pop_title clo"><?=$nn['title'];?></td>
+    <td class="pop_text">
+        <span><?=mb_substr($nn['text'],0,10);?>...</span>
+        <span class="modal" style="display:none;"><?=nl2br($nn['text']);?></span>
+    </td>
+    <td class="pop_good">
+        <span><?=$nn['good'];?>個人說<img src="./icon/02B03.jpg" width="25px"></span>
         <?php
-        $p = ($_GET['p']) ?? 1;
-        $allns = $news->math('count', 'id', ['sh' => 1]);
-        $div = 5;
-        $pages = ceil($allns / $div);
-        $start = ($p - 1) * $div;
-        $pre = ($p - 1 > 0) ? $p - 1 : 1;
-        $next = ($p + 1 <= $pages) ? $p + 1 : $pages;
-
-        $rows = $news->all(['sh' => 1], " order by `good` desc limit $start,$div");
-
-        foreach ($rows as $row) {
-        ?>
-            <tr>
-                <td class="title clo" style="cursor:pointer"><?= $row['title']; ?></td>
-                <td class="pop">
-                    <span class="summary"><?= mb_substr($row['text'], 0, 20); ?>...</span>
-                    <span class="full modal" style="display:none;"><?= nl2br($row['text']); ?></span>
-                </td>
-
-                <td>
-                <?php
-                if(isset($_SESSION['user'])){
-                    if ($log->math('count','id',['news'=>$row['id'],'user'=>$_SESSION['user']])>=1){
-                    ?>
-                    <a class="great" href="#" data-id=<?=$row['id'];?>>-收回讚</a>
-                    <?php
-                    }else {
-                    ?>
-                    <a class="great" href="#" data-id=<?=$row['id'];?>>-讚</a>
-                    <?php
-                    }
-                }
-                ?>
-                </td>
-            </tr>
-        <?php
+        if (isset($_SESSION['acc'])) {
+            if ($log->math('count','id',['news'=>$nn['id'],'user'=>$_SESSION['acc']])>0) {
+            ?>
+            <span><a class="great" href="#" data-id="<?=$nn['id'];?>">-收回讚</a></span>
+            <?php
+            }else {
+            ?>
+            <span><a class="great" href="#" data-id="<?=$nn['id'];?>">-讚</a></span>
+            <?php
+            }
         }
         ?>
-    </table>
-    <div style="text-align:center;">
-        <a href="?do=news&p=<?= $pre; ?>">
-            <</a>
-                <?php
-                for ($i = 1; $i <= $pages; $i++) {
-                ?>
-                    <a href="?do=news&p=<?= $i; ?>" <?= ($p == $i) ? "style='font-size:20px'" : ""; ?>><?= $i; ?></a>
-                <?php
-                }
-                ?>
-                <a href="?do=news&p=<?= $next; ?>">></a>
-    </div>
+    </td>
+</tr>
+<?php
+}
+?>
+</table>
+<div class="ct">
+    <a href="?do=pop&p=<?=$pre;?>"><</a>
+    <?php
+        for ($i=1; $i <= $pages ; $i++) { 
+        ?>
+            <a href="?do=pop&p=<?=$i;?>" <?=($i==$p)?"style='font-size:24px'":"";?>><?=$i;?></a>
+        <?php
+        }
+    ?>
+    <a href="?do=pop&p=<?=$next;?>">></a>
+</div>
 </fieldset>
-
 <script>
-    $('.title,.pop').hover(function() {
-        $(this).parent().find('.modal').show();
-    },function(){
-        $(this).parent().find('.modal').hide();
+    $(".pop_title").hover(function(){
+        $(this).next().find('.modal').fadeToggle();
     })
+    $(".pop_text").hover(function(){
+        $(this).find('.modal').fadeToggle();
+    })
+  
+   
+
 
     $('.great').on('click',function(){
-    let text=$(this).text();
-    if (text=="-讚") {
-        $(this).text("收回讚");
-    }else {
-        $(this).text("-讚");
-    }
-})
+        let text=$(this).text();
+        let id =$(this).attr('data-id')
+        $.post("./api/good.php",{text,id},()=>{
+            location.reload();
+        })
+    })
+
 </script>
+

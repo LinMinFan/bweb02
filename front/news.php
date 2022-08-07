@@ -1,84 +1,76 @@
 <fieldset>
-    <legend>目前位置：首頁>分類網誌><span id="header">最新文章區</span></legend>
-    <table id="news">
-        <tr>
-            <td width="30%">標題</td>
-            <td width="50%">內容</td>
-            <td width="20%"></td>
-        </tr>
-        <?php
-        $p=($_GET['p'])??1;
-        $allns=$news->math('count','id',['sh'=>1]);
-        $div=5;
-        $pages=ceil($allns/$div);
-        $start=($p-1)*$div;
-        $pre=($p-1>0)?$p-1:1;
-        $next=($p+1<=$pages)?$p+1:$pages;
 
-        $rows=$news->all(['sh'=>1]," limit $start,$div");
+<legend><p>目前位置：首頁><span>最新文章</span></p></legend>
 
-        foreach ($rows as $row) {
-        ?>
-        <tr>
-            <td class="title clo"><?=$row['title'];?></td>
-            <td>
-                <span class="summary"><?=mb_substr($row['text'],0,20);?>...</span>
-                <span class="full" style="display:none;"><?=nl2br($row['text']);?></span>
-            </td>
-            <td>
-                <span><?=$row['good'];?></span>個人說<img src="./icon/02B03.jpg" width="25px">
-                <?php
-                if(isset($_SESSION['user'])){
-                    if ($log->math('count','id',['news'=>$row['id'],'user'=>$_SESSION['user']])>=1){
-                    ?>
-                    <a class="great" href="#" data-id=<?=$row['id'];?>>收回讚</a>
-                    <?php
-                    }else {
-                    ?>
-                    <a class="great" href="#" data-id=<?=$row['id'];?>>讚</a>
-                    <?php
-                    }
-                }
-                ?>
-            </td>
-        </tr>
+
+<table style="width:80%;margin:0 auto">
+<tr>
+    <td style="width:25%;">標題</td>
+    <td style="width:50%;">內容</td>
+    <td ></td>
+</tr>
+<?php
+$p=$_GET['p']??1;
+$div=5;
+$countns=$news->math('count','id',$sh);
+$pages=ceil(($countns/$div));
+$start=($p-1)*$div;
+$pre=(($p-1)>0)?($p-1):1;
+$next=(($p+1)<=$pages)?($p+1):$pages;
+$nns=$news->all($sh," limit $start,$div");
+foreach ($nns as $key => $nn) {
+?>
+<tr>
+    <td class="news_title clo"><?=$nn['title'];?></td>
+    <td class="news_text">
+        <span><?=mb_substr($nn['text'],0,10);?>...</span>
+        <span style="display:none;"><?=nl2br($nn['text']);?></span>
+    </td>
+    <td class="news_good">
+        <span><?=$nn['good'];?>個人說<img src="./icon/02B03.jpg" width="25px"></span>
         <?php
+        if (isset($_SESSION['acc'])) {
+            if ($log->math('count','id',['news'=>$nn['id'],'user'=>$_SESSION['acc']])>0) {
+            ?>
+            <span><a class="great" href="#" data-id="<?=$nn['id'];?>">收回讚</a></span>
+            <?php
+            }else {
+            ?>
+            <span><a class="great" href="#" data-id="<?=$nn['id'];?>">讚</a></span>
+            <?php
+            }
         }
         ?>
-        
-    </table>
-    <div style="text-align:center;">
+    </td>
+</tr>
+<?php
+}
+?>
+</table>
+<div class="ct">
     <a href="?do=news&p=<?=$pre;?>"><</a>
-        <?php
-        for ($i=1; $i <= $pages; $i++) { 
+    <?php
+        for ($i=1; $i <= $pages ; $i++) { 
         ?>
-        <a href="?do=news&p=<?=$i;?>" <?=($p==$i)?"style='font-size:20px'":"";?>><?=$i;?></a>
+            <a href="?do=news&p=<?=$i;?>" <?=($i==$p)?"style='font-size:24px'":"";?>><?=$i;?></a>
         <?php
         }
-        ?>
+    ?>
     <a href="?do=news&p=<?=$next;?>">></a>
-    </div>
+</div>
 </fieldset>
-
 <script>
-$('.title').on('click',function(){
-    $(this).next().children().toggle();
-})
-
-$('.great').on('click',function(){
-    let type=$(this).text();
-    let num =Number( $(this).parent().find('span').text())
-    let id=$(this).data('id')
-    $.post("./api/good.php",{id,type},()=>{
-        
-        if (type=="讚") {
-            $(this).text("收回讚");
-            $(this).parent().find('span').text((num+1))
-        }else {
-            $(this).text("讚");
-            $(this).parent().find('span').text((num-1))
-        }
+    $('.news_title').on('click',function(){
+        $(this).next().children().toggle();
     })
-})
 
+
+    $('.great').on('click',function(){
+        let text=$(this).text();
+        let id =$(this).attr('data-id')
+        $.post("./api/good.php",{text,id},()=>{
+            location.reload();
+        })
+    })
 </script>
+

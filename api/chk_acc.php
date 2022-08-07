@@ -1,9 +1,11 @@
 <?php
-include_once "../base.php";
+include "../base.php";
 
-//$acc=$_POST['acc'];
-//echo $User->math('count','id',['acc'=>$acc]);
-$acc=$_POST['acc']??$_GET['acc'];
-echo $user->math('count','id',['acc'=>$acc]);
+$chkacc=$user->math('count','id',['acc'=>$_POST['acc']]);
 
-?>
+if ($chkacc>0) {
+    echo 1;
+}else {
+    echo 0;
+}
+

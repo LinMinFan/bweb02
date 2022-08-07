@@ -1,29 +1,48 @@
-<?php
-$subject=$que->find($_GET['id']);
-$opts=$que->all(['subject_id'=>$_GET['id']]);
-?>
+<style>
+    .resbox{
+        background: #ddd;
+        width: var(--wd);
+        height: 30px;
+    }
+    .resbox span{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        width: 100px;
+    }
+</style>
+
 <fieldset>
-    <legend>目前位置：首頁>問券調查><span><?=$subject['text'];?></span></legend>
-
-    <h3><?=$subject['text'];?></h3>
-
-    <?php
-            foreach($opts as $opt){
-                $sum=($subject['count']==0)?1:$subject['count'];
-                $width=round($opt['count']/$sum,2)*100;
-                $background=($width==0)?'#fff':'#ccc';
-                echo "<div style='display:flex;align-items:center'>";
-                echo "<div style='width:50%'>";
-                echo $opt['text'];
-                echo "</div>";
-                echo "<div style='width:50%;display:flex:'>";
-                echo "<div style='min-width:max-content;width:{$width}%;background:{$background};height:25px;text-align:center'>";
-                echo $opt['count']."票({$width}%)";
-                echo "</div>";
-                echo "</div>";
-                echo "</div>";
-            }
+    <legend><p>目前位置：首頁><span >問券調查><?=$que->find($_GET['id'])['text'];?></span></p></legend>
+    
+    <table style="width:100%;">
+        <tr>
+            <td style="width:45%;"><?=$que->find($_GET['id'])['text'];?></td>
+            <td style="width:45%;"></td>
+        </tr>
+        <?php
+        $qqs=$que->all(['subject_id'=>$_GET['id']]);
+        foreach ($qqs as $key => $qq) {
+            $countS=$que->find($_GET['id'])['count'];
+            $countO=$que->find($qq['id'])['count'];
+            $cent=round((($countO/(($countS==0)?1:$countS))),2)*100;
         ?>
-    <div class="ct"><button onclick="location.href='?do=que'">返回</button></div>
-    
-    
+        <tr>
+            <td><?=$qq['text'];?></td>
+            <td style="position: relative;">
+                <div class="resbox ct" style="--wd:<?=$cent;?>%">
+                    
+                    <span><?=$countO;?>票(<?=$cent;?>%)</span>
+                </div>
+                
+            </td>
+           
+        </tr>
+        <?php
+        }
+        ?>
+    </table>
+        <div class="ct"><button onclick="location.href='?do=que'">返回</button></div>
+
+</fieldset>

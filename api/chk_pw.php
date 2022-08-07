@@ -1,16 +1,15 @@
 <?php
-include_once "../base.php";
+include "../base.php";
 
-//$acc=$_POST['acc'];
-//echo $User->math('count','id',['acc'=>$acc]);
+$chkpw=$user->math('count','id',['acc'=>$_POST['acc'],'pw'=>$_POST['pw']]);
 
-$chk=$user->math('count','id',['acc'=>$_POST['acc'],'pw'=>$_POST['pw']]);
 
-if($chk){
-    $_SESSION['user']=$_POST['acc'];
+if ($chkpw==1) {
+
+    $_SESSION['acc']=$_POST['acc'];
     echo 1;
-}else{
+
+}else {
     echo 0;
 }
-
 ?>

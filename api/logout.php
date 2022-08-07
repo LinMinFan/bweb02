@@ -1,7 +1,6 @@
 <?php
-
 session_start();
-unset($_SESSION['user']);
+unset($_SESSION['acc']);
 
-
+header("location:../index.php");
 ?>

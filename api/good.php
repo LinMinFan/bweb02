@@ -1,23 +1,23 @@
 <?php
-include_once "../base.php";
+include "../base.php";
 
-$type=$_POST['type'];
-$id=$_POST['id'];
+$nn=$news->find($_POST['id']);
 
-$nns=$news->find($id);
-
-switch ($type) {
+switch ($_POST['text']) {
     case '讚':
-        $nns['good']++;
-        $log->save(['news'=>$id,'user'=>$_SESSION['user']]);
+    case '-讚':
+        $nn['good']++;
+        $log->save(['news'=>$_POST['id'],'user'=>$_SESSION['acc']]);
         break;
     case '收回讚':
-        $nns['good']--;
-        $log->del(['news'=>$id,'user'=>$_SESSION['user']]);
+    case '-收回讚':
+        $nn['good']--;
+        $log->del(['news'=>$_POST['id'],'user'=>$_SESSION['acc']]);
         break;
     
     default:
         # code...
         break;
-    }
- $news->save($nns);    
+}
+
+$news->save($nn);
