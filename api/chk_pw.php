@@ -1,15 +1,11 @@
 <?php
 include "../base.php";
 
-$chkpw=$user->math('count','id',['acc'=>$_POST['acc'],'pw'=>$_POST['pw']]);
+$chk=$user->math('count','id',['acc'=>$_POST['acc'],'pw'=>$_POST['pw']]);
 
-
-if ($chkpw==1) {
-
-    $_SESSION['acc']=$_POST['acc'];
+if ($chk>0) {
     echo 1;
-
+    $_SESSION['acc']=$_POST['acc'];
 }else {
     echo 0;
 }
-?>

@@ -1,9 +1,9 @@
 <?php
 include "../base.php";
 
-$chkacc=$user->math('count','id',['acc'=>$_POST['acc']]);
+$chk_acc=$user->math('count','id',['acc'=>$_POST['acc']]);
 
-if ($chkacc>0) {
+if ($chk_acc>0) {
     echo 1;
 }else {
     echo 0;

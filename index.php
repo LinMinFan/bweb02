@@ -20,7 +20,7 @@ include "./base.php";
 </div>
 	<div id="all">
     	<div id="title">
-        <?=date("m 月 d 號 l");?> | 今日瀏覽: <?=$total->find(['date'=>$today])['total'];?> | 累積瀏覽: <?=$total->math("sum","total");?><a href="./index.php" style="float:right;">回首頁</a>        </div>
+        <?=date("m 月 d 日 l");?> | 今日瀏覽: <?=$total->find(['date'=>$today])['total'];?> | 累積瀏覽: <?=$total->math('sum','total');?><a href="./index.php" style="float:right;">回首頁</a></div>
         <div id="title2">
         	<img src="./icon/02B01.jpg" alt="健康促進網-回首頁">
         </div>
@@ -34,34 +34,34 @@ include "./base.php";
                	                 </div>
             <div class="hal" id="main">
             	<div>
-            		<marquee style="width:80%;">請民眾踴躍投稿電子報，讓電子報成為大家相互交流、分享的園地！詳見最新文章</marquee>
-                	<span style="width:18%; display:inline-block;">
+					<marquee style="width:80%;">請民眾踴躍投稿電子報，讓電子報成為大家相互交流、分享的園地！詳見最新文章。</marquee>
+            		<span class="ct" style="float:right;">
 					<?php
 					if (isset($_SESSION['acc'])) {
 						if ($_SESSION['acc']=="admin") {
-							?>
-								<span>歡迎，<?=$_SESSION['acc'];?><button id="manage" onclick="location.href='./back.php'">管理</button>|<button id="logout" onclick="logout()">登出</button></span>
-							<?php
+						?>
+						歡迎，<?=$_SESSION['acc'];?></span>
+						<span style="float:right;"><button onclick="location.href='./back.php'">管理</button>|<button onclick="location.href='./api/logout.php'">登出</button></span>
+						<?php
 						}else {
 						?>
-						<span>歡迎，<?=$_SESSION['acc'];?><button id="logout" onclick="logout()">登出</button></span>
+						歡迎，<?=$_SESSION['acc'];?><button onclick="location.href='./api/logout.php'">登出</button></span>
 						<?php
 						}
 					}else {
 					?>
-					<a href="?do=login">會員登入</a>
+                    <a href="?do=login">會員登入</a></span>
 					<?php
 					}
 					?>
-                    </span>
                     <div class="">
 						<?php
-						$file="./front/$do.php";
-						if (file_exists($file)) {
-							include $file;
-						}else {
-							include "./front/main.php";
-						}
+							$file="./front/$do.php";
+							if (file_exists($file)) {
+								include $file;
+							}else {
+								include "./front/main.php";
+							}
 						?>
                 	</div>
                 </div>
@@ -74,10 +74,4 @@ include "./base.php";
         </div>
     </div>
 
-	<script>
-		function logout(){
-			location.href="./api/logout.php";
-		}
-	</script>
-</body>
-</html>
+</body></html>

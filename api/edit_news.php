@@ -2,8 +2,8 @@
 include "../base.php";
 
 if (!empty($_POST['id'])) {
-    foreach ($_POST['id'] as $id) {
-        if(isset($_POST['del']) && in_array($id,$_POST['del'])){
+    foreach ($_POST['id'] as $key => $id) {
+        if (isset($_POST['del']) && in_array($id,$_POST['del'])) {
             $news->del($id);
         }else {
             $data=$news->find($id);
@@ -12,5 +12,4 @@ if (!empty($_POST['id'])) {
         }
     }
 }
-
 to("../back.php?do=news");

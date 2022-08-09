@@ -1,47 +1,57 @@
+<style>
+    .out_box {
+        width: 80%;
+        margin: 0 auto;
+    }
 
-    <form action="./api/edit_news.php" method="POST">
-    <table style="width:80%;margin:0 auto;">
-        <tr>
-            <td style="width:10%;">編號</td>
-            <td >標題</td>
-            <td style="width:10%;">顯示</td>
-            <td style="width:10%;">刪除</td>
-        </tr>
+    .row_box {
+        display: flex;
+        width: 100%;
+    }
+</style>
+<fieldset style="width:80%;margin:0 auto;">
+    <legend>最新文章管理</legend>
+    <form action="./api/edit_news.php" method="post">
+    <div class="out_box" style="width:100%;">
+        <div class="row_box">
+            <div class="ct" style="width:6%;">編號</div>
+            <div class="ct" style="width:65%;">標題</div>
+            <div class="ct" style="width:10%;">顯示</div>
+            <div class="ct" style="width:10%;">刪除</div>
+        </div>
         <?php
         $p=$_GET['p']??1;
+        $countall=$$do->math('count','id');
         $div=3;
-        $countns=$news->math('count','id');
-        $pages=ceil(($countns/$div));
+        $pages=ceil($countall/$div);
         $start=($p-1)*$div;
         $pre=(($p-1)>0)?($p-1):1;
         $next=(($p+1)<=$pages)?($p+1):$pages;
-        $nns=$news->all(" limit $start,$div");
+        $nns = $$do->all(" limit $start,$div");
         foreach ($nns as $key => $nn) {
         ?>
-        <tr>
-            <td class="clo"><span><?=$key+1+$start;?>.</span></td>
-            <td><?=$nn['title'];?></td>
-            <td><input type="checkbox" name="sh[]" id="sh" value="<?=$nn['id'];?>" <?=($nn['sh']==1)?"checked":"";?>></td>
-            <td><input type="checkbox" name="del[]" id="del" value="<?=$nn['id'];?>"></td>
-            <input type="hidden" name="id[]" value="<?=$nn['id'];?>">
-           
-        </tr>
+                <div class="row_box">
+                    <div class="clo ct" style="width:6%;margin:5px"><?=($key+1+$start);?>.</div>
+                    <div style="width:65%;"><?=$nn['title'];?></div>
+                    <div style="width:10%;"><input type="checkbox" name="sh[]" value="<?=$nn['id'];?>" <?=($nn['sh']==1)?"checked":"";?>></div>
+                    <div style="width:10%;"><input type="checkbox" name="del[]" value="<?=$nn['id'];?>" ></div>
+                    <input type="hidden" name="id[]" value="<?=$nn['id'];?>">
+                </div>
         <?php
         }
         ?>
-    </table>
+    </div>
     <div class="ct">
-    <a href="?do=news&p=<?=$pre;?>"><</a>
-    <?php
+        <a href="?do=news&p=<?=$pre;?>"><</a>
+        <?php
         for ($i=1; $i <= $pages ; $i++) { 
         ?>
             <a href="?do=news&p=<?=$i;?>" <?=($i==$p)?"style='font-size:24px'":"";?>><?=$i;?></a>
         <?php
         }
-    ?>
-    <a href="?do=news&p=<?=$next;?>">></a>
-</div>
-<div class="ct">
-    <input type="submit" value="確定修改">
-</div>
-</form>
+        ?>
+        <a href="?do=news&p=<?=$next;?>">></a>
+    </div>
+    <div class="ct"><input type="submit" value="確定修改"></div>
+    </form>
+   </fieldset>

@@ -1,13 +1,12 @@
 <?php
-include_once "../base.php";
-$array=["健康新知"=>"1","菸害防制"=>"2","癌症防治"=>"3","慢性病防治"=>"4"];
-$type=$array[$_GET['type']];
+include "../base.php";
 
-$posts=$news->all(['type'=>$type]);
+$array=['健康新知'=>1,'菸害防治'=>2,'癌症防治'=>3,'慢性病防治'=>4];
 
-foreach ($posts as $post) {
-    echo "<a href='javascript:getnews({$post['id']})'>";
-    echo $post['title'];
-    echo "</a>";
+$data=$news->all(['sh'=>1,'type'=>$array[$_GET['text']]]);
+
+foreach ($data as $dt) {
+?>
+<p><a href="javascript:text(<?=$dt['id'];?>)"><?=$dt['title'];?></a></p>
+<?php
 }
-

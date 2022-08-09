@@ -1,14 +1,15 @@
 <?php
 include "../base.php";
-if (!empty($_POST['subject'])) {
-    $que->save(['text'=>$_POST['subject'],'count'=>0,'subject_id'=>0]);
-    $sjt_id=$que->find(['text'=>$_POST['subject']])['id'];
 
-    if (!empty($_POST['opt'])) {
-        foreach ($_POST['opt'] as $key => $opt) {
-            $que->save(['text'=>$opt,'count'=>0,'subject_id'=>$sjt_id]);
+if (!empty($_POST['s_title'])) {
+    $subject=['text'=>$_POST['s_title'],'count'=>0,'parent'=>0];
+    $que->save($subject);
+    $parent=$que->find(['text'=>$_POST['s_title']])['id'];
+    if (!empty($_POST['s_opt'])) {
+        foreach ($_POST['s_opt'] as $key => $opt) {
+            $sub=['text'=>$opt,'count'=>0,'parent'=>$parent];
+            $que->save($sub);
         }
     }
 }
-
 to("../back.php?do=que");

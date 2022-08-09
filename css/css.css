@@ -297,15 +297,3 @@ cursor:default;
 	right:0px;
 	margin:auto;
 }
-
-.po_left{
-	display: flex;
-	flex-direction: column;
-}
-.po_left a{
-	display: block;
-	margin-top: 10px;
-	text-decoration: none;
-}
-
-

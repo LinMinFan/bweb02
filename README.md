@@ -101,7 +101,8 @@
     * table建立login.php畫面使用ajax不使用form表單
         * `function reset(){$('#acc,#pw').val("")};`
 
-        * ```function login(){
+        * ```js
+            function login(){
             let acc=$("#acc").val();
             let pw=$("#pw").val();
             $.post("./api/chk_acc.php",{acc},(res)=>{
@@ -132,7 +133,8 @@
     * 建立reg.php畫面
         * `function reset(){$('#acc,#pw,#pw2,#email').val ("")};`
 
-        * ```function reg() {
+        * ```js
+            function reg() {
                 let user = {
                     acc: $("#acc").val(),
                     pw: $("#pw").val(),
@@ -158,18 +160,22 @@
                     })
                 }
             }
+
         * 完成api/reg.php 新增會員資料
 
     * 建立forget.php畫面
-        * ```function mail(){
+        * ```js
+            function mail(){
             $.post("api/find_pw.php",{email:$("#email").val()},(res)=>{
                 $("#result").text(res)
             })
             }
+
         * 完成api/find_pw.php 查詢密碼
 
     * 建立logout.php 清除$_SESSION
-        * ```function logout(){
+        * ```js
+            function logout(){
             $.get("api/logout.php",()=>{
                 location.reload();
                 })
@@ -177,7 +183,8 @@
     
     * 使用session判斷登入顯示功能並複製index.php建立back.php
         * back.php
-            * ```<?php
+            * ```php
+                <?php
 			    if(isset($_SESSION['user'])){
 			    	if($_SESSION['user']==='admin'){
 			    	?>
@@ -199,7 +206,8 @@
 			    ?>
 
         * indwx.php
-            * ```<?php
+            * ```php
+                <?php
 				if(isset($_SESSION['user'])){
 					if($_SESSION['user']==='admin'){
 					?>
@@ -222,12 +230,14 @@
 
     * 建立後台帳號管理畫面
         * 建立ajax抓取資料庫資料
-            * ```$.get("./api/users.php",(users)=>{
+            * ```js
+                $.get("./api/users.php",(users)=>{
                 $("#users").html(users)
                 })
 
         * 完成api/users.php 引入資料
-            * ```<?php
+            * ```php
+                <?php
                 include_once "../base.php";
                 $users=$User->all();
                 foreach($users as $user){
@@ -243,7 +253,8 @@
                 }
 
         * 完成api/del_user.php 刪除資料
-            * ```<?php
+            * ```php
+                <?php
                 include_once "../base.php";
                 if(!empty($_POST['del'])){
                 foreach($_POST['del'] as $id){
@@ -251,7 +262,8 @@
                 }
                 }
 
-            * ```function del(){
+            * ```js
+                function del(){
                 let ids=new Array();
                 $("table input[type='checkbox']:checked").each((idx,box)=>{
                 ids.push($(box).val())
@@ -267,7 +279,8 @@
 
     * 建立文章管理的顯示及刪除功能 以form表單POST方式處理
         * 完成api/news.php
-            * ```<?php
+            * ```php
+                <?php
                 include_once "../base.php";
                 if(isset($_POST['del'])){
                 foreach($_POST['del'] as $id){
@@ -284,11 +297,13 @@
                 $News->save($row);
                 }
                 to("../back.php?do=news");
+
         * 文章管理的分頁功能
     
     * 建立後台新增問卷功能
         * 完成api/que.php
-            * ```<?php
+            * ```php
+                <?php
 
                 include_once "../base.php";
                 if(!empty($_POST['subject'])){
@@ -302,22 +317,26 @@
                 }
                 to("../back.php?do=que");
 
-            * ```function more(){
+            * ```js
+                function more(){
                 let opt=`<div>選項<input type="text" name="option[]"></div>`
                 $("#options").append(opt)
                 }
+
         * 建立sql que資料表
 
     * 使用dreamweaver來製作主題內容頁
         * Html檔->插入->Spry->標籤面版並貼入內容
         * 建立分類網誌基本外觀及點擊功能
-            * ```$(".type").on("click",function(){
+            * ```js
+                $(".type").on("click",function(){
                 let type=$(this).text()
                 $("#header").text(type)
                 })
 
         * 建立api/get_list.php
-            * ```<?php
+            * ```php
+                <?php
                 include_once "../base.php";
                 $array=[ "健康新知"=>"1", "菸害防制"=>"2", "癌症防治"=>"3", "慢性病防治"=>"4", ];
                 $type=$array[$_GET['type']];
@@ -329,14 +348,16 @@
                 }
 
         * 建立api/get_news.php
-            * ```<?php
+            * ```php
+                <?php
                 include_once "../base.php";
                 $id=$_GET['id'];
                 $news=$News->find($id);
                 echo nl2br($news['text']);```
 
         * 完成po.php function 分類網誌
-            * ```getList('健康新知');
+            * ```js
+                getList('健康新知');
                 $(".type").on("click",function(){
                 let type=$(this).text()
                 $("#header").text(type)
@@ -357,12 +378,14 @@
         * 完成列表顯示 分頁功能
         * 人氣文章 依人氣排序
         * 建立點擊function 顯示完整內容
-            * ```$(".title").on("click",function(){
+            * ```js
+                $(".title").on("click",function(){
                 $(this).next().children().toggle()
                 })
 
         * 彈出視窗功能
-            * ```$(".title,.pop").hover(
+            * ```js
+                $(".title,.pop").hover(
                 function (){
                 $(this).parent().find('.modal').show()
                 },
@@ -372,12 +395,14 @@
                 )
 
         * 登入後可以按讚功能 / 讚數加1 /收回讚功能 不重複按讚
-            * ```<?php 
+            * ```php
+                <?php 
                 if(isset($_SESSION['user'])){
                     echo "<a class='great' href='#'>讚</a>";
                 }
 
-            * ```$(".great").on("click",function(){
+            * ```js
+                $(".great").on("click",function(){
                 let type=$(this).text()
                 let num=parseInt($(this).siblings('span').text())
                 let id=$(this).data('id')
@@ -392,7 +417,8 @@
                 })
                 })
 
-            * ```$news=$News->find($id);
+            * ```php
+                $news=$News->find($id);
                     switch($type){
                     case '讚':
                     $news['good']++;
@@ -405,7 +431,8 @@
                 }
 
     * 建立問卷列表畫面 / 判斷是否登入 
-        * ```<?php
+        * ```php
+            <?php
                 if(!isset($_SESSION['user'])){
                     echo "請先登入";
                     }else{
@@ -413,7 +440,8 @@
                 }
     
     * 建立投票 畫面 / 功能
-        * ```<?php
+        * ```php
+            <?php
             include_once "../base.php";
             $opt=$_POST['opt'];
             $option=$Que->find($opt);

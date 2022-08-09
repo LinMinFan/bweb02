@@ -1,6 +1,6 @@
 <?php
-session_start();
+include "../base.php";
+
 unset($_SESSION['acc']);
 
-header("location:../index.php");
-?>
+to("../index.php?do=login");

@@ -1,45 +1,59 @@
-<fieldset>
-    <legend><p>目前位置：首頁>分類網誌><span id="po_title">健康新知</span></p></legend>
-
-<div style="display:flex;justify-content: center;">
-<div class="po_left" style="width:20%;">
-<fieldset>
-    <legend>分類網誌</legend>
-    <a href="#" class="type">健康新知</a>
-    <a href="#" class="type">菸害防治</a>
-    <a href="#" class="type">癌症防治</a>
-    <a href="#" class="type">慢性病防治</a>
-</fieldset>
+<style>
+    .outsidebox{
+        display: flex;
+        width: 600px;
+        margin: 0 auto;
+    }
+    .left_box{
+        display: flex;
+        flex-direction: column;
+        margin: 10px auto;
+    }
+    .left_box a{
+        display: block;
+    }
+</style>
+<div>
+    <span>
+        目前位置：首頁>分類網誌><span class="menu_title">健康新知</span>
+    </span>
 </div>
-<div class="po_right" style="width:50%;">
-    <fieldset>
+<div class="outsidebox">
+    <fieldset style="width:25%;">
+        <legend>分類網誌</legend>
+        <div class="left_box">
+        <a class="lftmm" href="#">健康新知</a>
+        <a class="lftmm" href="#">菸害防治</a>
+        <a class="lftmm" href="#">癌症防治</a>
+        <a class="lftmm" href="#">慢性病防治</a>
+        </div>
+    </fieldset>
+    <fieldset style="width:75%;">
         <legend>文章列表</legend>
-        <div id="po_content">
+        <div class="right_box">
 
         </div>
     </fieldset>
 </div>
-</div>
-</fieldset>
+
 <script>
-    getlist('健康新知');
+    list("健康新知");
 
-    let menu=$('.type');
-    menu.click(function(){
-        let type=$(this).html();
-        $('#po_title').html(type);
-        getlist(type);
+    $('.lftmm').on('click',function(){
+        let text=$(this).text();
+        $('.menu_title').text(text);
+        list(text);
     })
-
-    function getlist(type){
-        $.get("./api/getlist.php",{type},(res)=>{
-            $('#po_content').html(res);
+    function list(text){
+        $.get("./api/get_list.php",{text},(res)=>{
+            $('.right_box').html(res);
         })
     }
-   
-   function gettext(id){
-    $.get("./api/gettext.php",{id},(res)=>{
-            $('#po_content').html(res);
+    function text(id){
+        $.get("./api/get_text.php",{id},(res)=>{
+            console.log(res);
+            $('.right_box').html(res);
         })
-   }
+    }
+
 </script>

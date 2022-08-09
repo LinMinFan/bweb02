@@ -1,7 +1,8 @@
 <?php
 include "../base.php";
-if (!empty($_POST['ids'])) {
-    foreach ($_POST['ids'] as  $id) {
-        $user->del($id);
-    }
+
+$ids=$_POST['ids'];
+
+foreach ($ids as $id) {
+    $user->del($id);
 }

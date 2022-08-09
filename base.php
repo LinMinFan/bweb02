@@ -5,7 +5,7 @@ date_default_timezone_set("Asia/Taipei");
 class db{
     protected $table;
     protected $pdo;
-    protected $dsn="mysql:host=localhost;charset=utf8;dbname=bweb02;";
+    protected $dsn="mysql:host=localhost;charset=utf8;dbname=bweb02";
 
     function __construct($table)
     {
@@ -43,7 +43,7 @@ class db{
                 $sql.=$arg[0];
             }
         }
-        if (isset($arg[1])){
+        if (isset($arg[1])) {
             $sql.=$arg[1];
         }
         //echo $sql;
@@ -69,7 +69,7 @@ class db{
         }else {
             $sql="INSERT INTO $this->table (`".join("`, `",array_keys($array))."`) VALUES ('".join("','",$array)."')";
         }
-        //echo $sql;
+        //echo $sql
         return $this->pdo->exec($sql);
     }
 
@@ -83,15 +83,13 @@ class db{
                 $sql.=$arg[0];
             }
         }
-        if (isset($arg[1])){
+        if (isset($arg[1])) {
             $sql.=$arg[1];
         }
         //echo $sql;
         return $this->pdo->query($sql)->fetchColumn();
     }
 }
-
-
 
 
 function dd($array){
@@ -105,24 +103,22 @@ function to($url){
 }
 
 $total=new db('total');
+$user=new db('user');
+$log=new db('log');
 $news=new db('news');
 $que=new db('que');
-$log=new db('log');
-$user=new db('user');
 
 $today=date("Y-m-d");
-$sh=['sh'=>1];
-
-if (!isset($_SESSION['total'])) {
-    if ($total->math('count','id',['date'=>$today])>0) {
-        $logs=$total->find(['date'=>$today]);
-        $logs['total']++;
+if (!isset($_SESSION['log'])) {
+    $chk_d=$total->math('count','id',['date'=>$today]);
+    if ($chk_d>0) {
+        $dt=$total->find(['date'=>$today]);
+        $dt['total']++;
     }else {
-        $logs=['date'=>$today,'total'=>1];
+        $dt=['date'=>$today,'total'=>1];
     }
-    $total->save($logs);
-    $_SESSION['total']=1;
+    $_SESSION['log']=1;
+    $total->save($dt);
 }
 
-//dd($total->all(" limit 5"));
 ?>

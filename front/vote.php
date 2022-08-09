@@ -1,36 +1,36 @@
-<style>
-    .resbox{
-        background: #ddd;
-        width: var(--wd);
-        height: 30px;
-    }
-    .resbox span{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
-        width: 100px;
-    }
-</style>
+<?php
+$subject=$que->find($_GET['id']);
+$opts=$que->all(['parent'=>$_GET['id']]);
+?>
+<div>
+    <span>
+        目前位置：首頁>分類網誌><span class="menu_title">問卷調查><?=$subject['text'];?></span>
+    </span>
+</div>
+<h3><?=$subject['text'];?></h3>
+<div class="opts_box">
+<table>
+<?php
+foreach ($opts as $key => $opt) {
+?>
+<tr>
+    <td><input type="radio" name="opt" data-id="<?=$opt['id'];?>"></td>
+    <td><?=$opt['text'];?></td>
+</tr>
+<?php
+}
+?>
+</table>
+</div>
+<div class="ct"><button onclick="vote()">我要投票</button></div>
 
-<fieldset>
-    <legend><p>目前位置：首頁><span >問券調查><?=$que->find($_GET['id'])['text'];?></span></p></legend>
-    <form action="./api/vote.php" method="POST">
-    <table>
-        <tr>
-            <td style="width:90%;"><?=$que->find($_GET['id'])['text'];?></td>
-        </tr>
-        <?php
-        $qqs=$que->all(['subject_id'=>$_GET['id']]);
-        foreach ($qqs as $key => $qq) {
-        ?>
-        <tr>
-            <td><input type="radio" name="opt" value="<?=$qq['id'];?>"><?=$qq['text'];?></td>
-        </tr>
-        <?php
-        }
-        ?>
-    </table>
-        <div class="ct"><input type="submit" value="我要投票"></div>
-        </form>
-</fieldset>
+<script>
+function vote(){
+        let id=$('input:checked').data('id');
+        let parent=<?=$_GET['id'];?>;
+        $.post("./api/vote.php",{id,parent},()=>{
+            location.href="?do=result&id="+parent;
+        })
+    }
+</script>
+
