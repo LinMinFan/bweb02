@@ -2,9 +2,9 @@
 include "../base.php";
 
 $opt=$que->find($_POST['id']);
-$subject=$que->find($_POST['parent']);
-
+$subject=$que->find($opt['parent']);
 $opt['count']++;
 $subject['count']++;
 $que->save($opt);
 $que->save($subject);
+echo $subject['id'];

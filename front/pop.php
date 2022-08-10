@@ -1,103 +1,153 @@
 <style>
-    .outsidebox{
+    .outside{
+        width: 80%;
         display: flex;
+        justify-content: center;
+    }
+    .block{
+        display: block;
+    }
+    .flex{
+        display: flex;
+    }
+    .flex_c{
+        display: flex;
+        justify-content: center;
+    }
+    .flex_a{
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .w5{
+        width: 5%;
+    }
+    .w10{
+        width: 10%;
+    }
+    .w20{
+        width: 20%;
+    }
+    .w35{
+        width: 35%;
+    }
+    .w40{
+        width: 40%;
+    }
+    .w50{
+        width: 50%;
+    }
+    .w60{
+        width: 60%;
+    }
+    .w70{
+        width: 70%;
+    }
+    .w80{
+        width: 80%;
+    }
+    .w90{
+        width: 90%;
+    }
+    .w100{
+        width: 100%;
+    }
+
+    .mg{
         margin: 0 auto;
-        flex-wrap: wrap;
     }
-    .outsidebox div{
-        margin: 5px;
-    }
-    .news_title+div{
-        position: relative;
-    }
-    .sub_text{
+
+
+    .disno{
         position: absolute;
-        top: 0;
-        left: -40px;
-        background: #0000009a;
+        background: #000;
         color: #fff;
-        height: 400px;
+        opacity: 0.7;
+        left: -30px;
+        top: 0px;
         overflow: auto;
-        z-index: 10;
+        width: 400px;
+        height: 400px;
+
     }
 
 </style>
-<div>
-    <span>
-        目前位置：首頁>人氣文章區
-    </span>
-</div>
-<div class="outsidebox" style="width:100%;">
-    <div style="width:25%;">標題</div><div style="width:50%;">內容</div><div style="width:20%;">人氣</div>
-    <?php
+<div class="outside w100 mg">
+<fieldset class="w100 mg">
+    <legend>目前位置: 首頁 > 人氣文章區 </legend>
+    <table class="w90 mg">
+        <tr>
+            <td class="w35">標題</td>
+            <td class="w35">內容</td>
+            <td class="w20">人氣</td>
+        </tr>
+        <?php
         $p=$_GET['p']??1;
-        $countall=$news->math('count','id',['sh'=>1]);
+        $counts=$news->math('count','id');
         $div=5;
-        $pages=ceil($countall/$div);
+        $pages=ceil($counts/$div);
         $start=($p-1)*$div;
         $pre=(($p-1)>0)?($p-1):1;
         $next=(($p+1)<=$pages)?($p+1):$pages;
-        $nns = $news->all(" ORDER BY `good` DESC limit $start,$div");
-        foreach ($nns as $key => $nn) {
-            ?>
-            <div class="clo ct news_title" style="width:25%;"><?=$nn['title'];?></div>
-            <div style="width:50%;">
-            <span><?=mb_substr($nn['text'],0,10);?>...</span>
-            <span class="sub_text" style="display:none;"><?=$nn['text'];?></span>
-            </div>
-            <div class="news_good" style="width:20%;">
-            <span><?=$nn['good'];?>個人說<img src="./icon/02B03.jpg" width="15px">-</span>
-            <?php
-                if ((isset($_SESSION['acc']))) {
-                    if ($log->math('count','id',['user'=>$_SESSION['acc'],'news'=>$nn['id']]) > 0) {
-                    ?>
-                        <a class="goodlink" href="#" data-news="<?=$nn['id'];?>">收回讚</a>
-                    <?php
+        $datas=$news->all(['sh'=>1],"  ORDER BY `count` DESC limit $start,$div");
+        foreach ($datas as $key => $data) {
+        ?>
+        <tr>
+            <td class="w35 clo news_box"><?=$data['title'];?></td>
+            <td class="w35" style="position: relative;">
+                <span><?=mb_substr($data['text'],0,10);?>...</span>
+                <span class="disno" style="display:none;"><?=$data['text'];?></span>
+            </td>
+            <td class="w20 ct">
+                <?php
+                if (isset($_SESSION['acc'])) {
+                    if($log->math('count','id',['user'=>$_SESSION['acc'],'news'=>$data['id']])>0){
+                        ?>
+                            <?=$data['count'];?>個人說<span class="good"></span><a href="javascript:good(<?=$data['id'];?>,'收回讚')" class="agood">-收回讚</a>
+                        <?php
                     }else {
                         ?>
-                        <a class="goodlink" href="#" data-news="<?=$nn['id'];?>">讚</a>
+                            <?=$data['count'];?>個人說<span class="good"></span><a href="javascript:good(<?=$data['id'];?>,'讚')" class="agood">-讚</a>
                         <?php
                     }
+                }else {
+                    ?>
+                            <span><?=$data['count'];?>個人說<span class="good"></span></span>
+                    <?php
                 }
-            ?>
-            </div>
-            <?php
-            }
-    ?>
-</div>
-<div class="ct">
-        <a href="?do=pop&p=<?=$pre;?>"><</a>
-        <?php
-        for ($i=1; $i <= $pages ; $i++) { 
-        ?>
-            <a href="?do=pop&p=<?=$i;?>" <?=($i==$p)?"style='font-size:24px'":"";?>><?=$i;?></a>
+                ?>
+            </td>
+        </tr>
         <?php
         }
         ?>
-        <a href="?do=pop&p=<?=$next;?>">></a>
+    </table>
+    <div class="ct">
+        <a href="?do=<?=$do;?>&p=<?=$pre;?>"><</a>
+        <?php
+        for ($i=1; $i <= $pages ; $i++) { 
+        ?>
+        <a href="?do=<?=$do;?>&p=<?=$i;?>" <?=($i==$p)?"style='font-size:24px'":"";?>><?=$i;?></a>
+        <?php
+        }
+        ?>
+        <a href="?do=<?=$do;?>&p=<?=$next;?>">></a>
+    </div>
+</fieldset>
 </div>
 
 <script>
+$('.news_box').hover(function(){
+    $(this).next().children().toggle();
+})
+$('.disno').hover(function(){
+    $(this).toggle();
+})
 
-$('.goodlink').on('click',function(){
-    let text=$(this).text();
-    let id=$(this).data('news');
-    $.post("./api/good.php",{text,id},()=>{
+function good(id,good){
+    $.post("./api/good.php",{id,good},()=>{
         location.reload();
     })
-})
-
-$('.news_title').on('mouseenter',function(){
-    $(this).next().find('.sub_text').toggle();
-})
-$('.news_title').on('mouseout',function(){
-    $(this).next().find('.sub_text').toggle();
-})
-$('sub_text').on('mouseenter',function(){
-    $(this).toggle();
-})
-$('.sub_text').on('mouseout',function(){
-    $(this).toggle();
-})
+}
 
 </script>

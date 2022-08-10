@@ -1,56 +1,103 @@
 <style>
-    .out_box {
+    .outside{
         width: 80%;
+        display: flex;
+        justify-content: center;
+    }
+    .block{
+        display: block;
+    }
+    .flex{
+        display: flex;
+    }
+    .flex_c{
+        display: flex;
+        justify-content: center;
+    }
+    .flex_a{
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .w5{
+        width: 5%;
+    }
+    .w10{
+        width: 10%;
+    }
+    .w20{
+        width: 20%;
+    }
+    .w35{
+        width: 35%;
+    }
+    .w40{
+        width: 40%;
+    }
+    .w50{
+        width: 50%;
+    }
+    .w60{
+        width: 60%;
+    }
+    .w70{
+        width: 70%;
+    }
+    .w80{
+        width: 80%;
+    }
+    .w90{
+        width: 90%;
+    }
+    .w100{
+        width: 100%;
+    }
+
+    .mg{
         margin: 0 auto;
     }
 
-    .row_box {
-        display: flex;
-        width: 100%;
-    }
-    .row_box div{
-        margin: 5px;
-    }
 </style>
-<div>
-    <span>
-        目前位置：首頁>分類網誌><span class="menu_title">問卷調查</span>
-    </span>
-</div>
-
-    <div class="out_box" style="width:100%;">
-        <div class="row_box">
-            <div class="ct" style="width:5%;">編號</div>
-            <div class="ct" style="width:65%;">問券題目</div>
-            <div class="ct" style="width:10%;">投票總數</div>
-            <div class="ct" style="width:5%;">結果</div>
-            <div class="ct" style="width:10%;">狀態</div>
-        </div>
+<div class="outside w100 mg">
+<fieldset class="w100 mg">
+    <legend>目前位置: 首頁 > 問卷調查 </legend>
+    <table class="w90 mg">
+        <tr>
+            <td class="w5">編號</td>
+            <td class="w70">問卷題目</td>
+            <td class="w5">投票總數</td>
+            <td class="w5">結果</td>
+            <td class="w5">狀態</td>
+        </tr>
         <?php
-        $qqs = $$do->all(['parent'=>0]);
-        foreach ($qqs as $key => $qq) {
+    
+        $datas=$$do->all(['parent'=>0]);
+        foreach ($datas as $key => $data) {
         ?>
-                <div class="row_box">
-                    <div class="ct" style="width:5%;"><?=($key+1);?>.</div>
-                    <div style="width:65%;"><?=$qq['text'];?></div>
-                    <div class="ct" style="width:10%;"><?=$qq['count'];?></div>
-                    <div style="width:5%;"><a href="?do=result&id=<?=$qq['id'];?>">結果</a></div>
-                    <div style="width:10%;">
-                    <?php
+        <tr>
+            <td class="w5"><?=$key+1;?>.</td>
+            <td class="w70"><?=$data['text'];?></td>
+            <td class="w5"><?=$data['count'];?></td>
+            <td class="w5"><a href="?do=result&id=<?=$data['id'];?>">結果</a></td>
+            <td class="w5">
+                <?php
                     if (isset($_SESSION['acc'])) {
                     ?>
-                    <a href="?do=vote&id=<?=$qq['id'];?>">參與投票</a>
+                        <a href="?do=vote&id=<?=$data['id'];?>">參與投票</a>
                     <?php
                     }else {
                     ?>
-                    <span>請先登入</span>                
+                        <span>請先登入</span>
                     <?php
                     }
-                    ?>
-                    </div>
-                </div>
+                ?>
+            </td>
+        </tr>
         <?php
         }
         ?>
-    </div>
+    </table>
     
+</fieldset>
+</div>
+

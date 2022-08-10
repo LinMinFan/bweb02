@@ -6,6 +6,6 @@ $chk=$user->math('count','id',['acc'=>$_POST['acc'],'pw'=>$_POST['pw']]);
 if ($chk>0) {
     echo 1;
     $_SESSION['acc']=$_POST['acc'];
-}else {
+}else{
     echo 0;
 }

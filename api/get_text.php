@@ -1,6 +1,7 @@
 <?php
 include "../base.php";
 
+$id=$_POST['id'];
 
-$data=$news->find($_GET['id']);
-echo $data['text'];
+echo $news->find(['id'=>$id])['text'];
+

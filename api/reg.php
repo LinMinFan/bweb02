@@ -1,6 +1,12 @@
 <?php
 include "../base.php";
 
-$data=['acc'=>$_POST['acc'],'pw'=>$_POST['pw'],'email'=>$_POST['email']];
+$chk=$user->math('count','id',['acc'=>$_POST['acc']]);
 
-$user->save($data);
+if ($chk>0) {
+    echo 1;
+}else{
+    $data=['acc'=>$_POST['acc'],'pw'=>$_POST['pw'],'email'=>$_POST['email']];
+    $user->save($data);
+    echo 0;
+}
