@@ -2,6 +2,4 @@
 include "../base.php";
 
 unset($_SESSION['acc']);
-to("../index.php");
-
-?>
+to("../index.php?do=login");

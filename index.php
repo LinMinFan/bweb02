@@ -1,8 +1,8 @@
 ﻿<?php
 $do=$_GET['do']??"main";
 include "./base.php";
-?>
 
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- saved from url=(0039) -->
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -22,10 +22,9 @@ include "./base.php";
 <iframe name="back" style="display:none;"></iframe>
 	<div id="all">
     	<div id="title">
-        <?=date("m 月 d 號 l");?> | 今日瀏覽: <?=$total->find(['date'=>$today])['total'];?> | 累積瀏覽: <?=$total->math('sum','total');?><a style="float:right;" href="./index.php">回首頁</a></div>
+        <?=date("m 月 d 日 l");?> | 今日瀏覽: <?=$total->find(['date'=>$today])['total'];?> | 累積瀏覽: <?=$total->math('sum','total');?><a class="flr" href="./index.php">回首頁</a></div>
         <div id="title2">
-        	<img src="./icon/02B01.jpg" alt="健康促進網 - 回首頁">
-			
+        	<img src="./icon/02B01.jpg" alt="健康促進網-回首頁">
         </div>
         <div id="mm">
         	<div class="hal" id="lef">
@@ -37,37 +36,41 @@ include "./base.php";
                	                 </div>
             <div class="hal" id="main">
             	<div>
-            		<marquee style="width:80%;">請民眾踴躍投稿電子報，讓電子報成為大家相互交流、分享的園地！</marquee>
+            		<span><marquee class="w80">請民眾踴躍投稿電子報，讓電子報成為大家相互交流、分享的園地!詳見最新文章</marquee></span>
                 	<span style="width:18%; display:inline-block;">
 					<?php
-						if (isset($_SESSION['acc'])) {
-							if ($_SESSION['acc']=="admin") {
+					if (isset($_SESSION['acc'])) {
+						if ($_SESSION['acc']=="admin") {
 							?>
-							<p>歡迎，<?=$_SESSION['acc'];?></p></span>
-							<span style="float:right;margin-right:50px;"><button onclick="location.href='./back.php'">管理</button>|<button onclick="location.href='./api/logout.php'">登出</button></span>
+                    			<span class="flr">歡迎，<?=$_SESSION['acc'];?></span></span>
+								<span class="flr">
+								<button  onclick="location.href='./back.php'">管理</button>|
+								<button  onclick="location.href='./api/logout.php'">登出</button>
+								</span>
 							<?php
-							}else {
-							?>
-							<p>歡迎，<?=$_SESSION['acc'];?><button onclick="location.href='./api/logout.php'">登出</button></p></span>
-							<?php
-							}
 						}else {
-						?>
-                    	<a href="?do=login">會員登入</a></span>
-						<?php
+							?>
+                    			<span class="flr">歡迎，<?=$_SESSION['acc'];?><button onclick="location.href='./api/logout.php'">登出</button></span></span>
+								
+							<?php
 						}
+					}else {
+						?>
+                    		<a class="flr" href="?do=login">會員登入</a>
+						<?php
+					}
 					?>
-                    
+                    	                    </span>
                     	<div class="">
 							<?php
 							$file="./front/$do.php";
 							if (file_exists($file)) {
 								include $file;
-							}else{
+							}else {
 								include "./front/main.php";
 							}
 							?>
-                		                        </div>
+                		</div>
                 </div>
             </div>
         </div>

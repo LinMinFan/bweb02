@@ -1,18 +1,18 @@
 <?php
 include "../base.php";
 $do=$_GET['do'];
-$ids=($_POST['id'])??"";
+$ids=$_POST['id']??"";
+
 
 switch ($do) {
     case 'user':
-        foreach ($ids as $id) {
+        foreach ($ids as $key => $id) {
             if (isset($_POST['del']) && in_array($id,$_POST['del'])) {
                 $$do->del($id);
-            } 
+            }
         }
-        break;
     case 'news':
-        foreach ($ids as $id) {
+        foreach ($ids as $key => $id) {
             if (isset($_POST['del']) && in_array($id,$_POST['del'])) {
                 $$do->del($id);
             }else {
@@ -21,17 +21,17 @@ switch ($do) {
                 $$do->save($data);
             }
         }
-        break;
     case 'que':
-        $data=['text'=>$_POST['title'],'count'=>0,'parent'=>0];
-        $$do->save($data);
-        $parent=$$do->find(['text'=>$_POST['title']])['id'];
-        $opts=$_POST['opt'];
-        foreach ($opts as $key => $opt) {
-            $data_opt=['text'=>$opt,'count'=>0,'parent'=>$parent];
-            $$do->save($data_opt);
-        }
+                $subject=['text'=>$_POST['title'],'count'=>0,'parent'=>0];
+                $$do->save($subject);
+                $parent=$$do->find(['text'=>$_POST['title']])['id'];
+                $subs=$_POST['text'];
+                foreach ($subs as  $sub) {
+                    $opt=['text'=>$sub,'count'=>0,'parent'=>$parent];
+                    $$do->save($opt);
+                }
         break;
+    
     default:
         # code...
         break;

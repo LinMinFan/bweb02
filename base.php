@@ -44,7 +44,7 @@ class db{
             }
         }
         if (isset($arg[1])) {
-                $sql.=$arg[1];
+            $sql.=$arg[1];
         }
         //echo $sql;
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
@@ -65,8 +65,8 @@ class db{
     function save($array){
         if (isset($array['id'])) {
             $tmp=$this->to_str($array);
-            $sql="UPDATE $this->table SET ".join(" , ",$tmp)." WHERE `id`=".$array['id'];
-        }else{
+            $sql="UPDATE $this->table SET ".join(",",$tmp)." WHERE `id`=".$array['id'];
+        }else {
             $sql="INSERT INTO $this->table (`".join("`, `",array_keys($array))."`) VALUES ('".join("','",$array)."')";
         }
         //echo $sql;
@@ -84,12 +84,13 @@ class db{
             }
         }
         if (isset($arg[1])) {
-                $sql.=$arg[1];
+            $sql.=$arg[1];
         }
         //echo $sql;
         return $this->pdo->query($sql)->fetchColumn();
     }
 }
+
 
 function dd($array){
     echo "<pre>";
@@ -102,15 +103,14 @@ function to($url){
 }
 
 $user=new db('user');
-$log=new db('log');
-$news=new db('news');
-$que=new db('que');
 $total=new db('total');
+$que=new db('que');
+$news=new db('news');
+$log=new db('log');
 
 $today=date("Y-m-d");
 if (!isset($_SESSION['log'])) {
-    $chk=$total->math('count','id',['date'=>$today]);
-    if ($chk>0) {
+    if ($total->math('count','id',['date'=>$today])>0) {
         $log=$total->find(['date'=>$today]);
         $log['total']++;
     }else {
@@ -119,5 +119,6 @@ if (!isset($_SESSION['log'])) {
     $total->save($log);
     $_SESSION['log']=1;
 }
+
 
 ?>

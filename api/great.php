@@ -1,10 +1,11 @@
 <?php
 include "../base.php";
 
+
 switch ($_POST['good']) {
     case '讚':
-        $lg=['user'=>$_SESSION['acc'],'news'=>$_POST['id']];
-        $log->save($lg);
+        $record=['user'=>$_SESSION['acc'],'news'=>$_POST['id']];
+        $log->save($record);
         $nn=$news->find($_POST['id']);
         $nn['count']++;
         break;
