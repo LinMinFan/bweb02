@@ -1,54 +1,46 @@
+<?php
+$subject=$que->find($_GET['id']);
+$opts=$que->all(['parent'=>$_GET['id']]);
+?>
 <style>
-    .opt_box{
+    .color{
+        background: #ccc;
+        height: 30px;
+    }
+    .r_box{
         position: relative;
     }
-    .bkg{
-        height: 30px;
-        background: #ccc;
-        margin-left: 20px;
-    }
-    .opt_text{
+    .r_text{
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%,-50%);
     }
 </style>
-<?php
-$subject = $que->find(['id' => $_GET['id']]);
-?>
-
-<div class="w100">
-    <fieldset class="w100 mg">
-        <legend>目前位置：首頁 > 問卷調查 > <?=$subject['text'];?></legend>
-        <h3><?=$subject['text'];?></h3>
-        <table class="w100">
-            <?php
-            $opts = $que->all(['parent' => $_GET['id']]);
+<fieldset class="w90 mg_at">
+    <legend>目前位置: 首頁 > 問卷調查 > <span><?=$subject['text'];?></span></legend>
+    <h3><?=$subject['text'];?></h3>
+    <table class="w100">
+        <?php
             foreach ($opts as $key => $opt) {
-                $sbc=($subject['count']==0)?1:$subject['count'];
-                $cent=round($opt['count']/$sbc,2)*100;
-            ?>
-                <tr>
-                    <td class="w100 flex flex_ac">
-                        <div class="w50">
-                        <span><?=$opt['text'];?></span>
-                        </div>
-                        <div class="w45 opt_box">
-                            <div class="bkg" style="width:<?=$cent;?>%;">
+                $s_cut=($subject['count']==0)?1:$subject['count'];
+                $cent=round(($opt['count']/$s_cut),2)*100;
+                ?>
+                    <tr>
+                        <td class="w45"><?=$opt['text'];?></td>
+                        <td class="w45">
+                            <div class="r_box w100">
+                                    <div class="color" style="width:<?=$cent;?>%;"></div>
+                                    <span class="r_text"><?=$opt['count'];?>票(<?=$cent;?>%)</span>
                             </div>
-                            <span class="opt_text"><?=$opt['count'];?>票(<?=$cent;?>%)</span>
-                        </div>
-                    </td>
-                </tr>
-            <?php
-            }
-            ?>
-        </table>
-        <div class="ct"><button onclick="location.href='?do=que'">返回</button></div>
-    </fieldset>
-</div>
+                        </td>
+                    </tr>
+                <?php
+        }
+        ?>
+    </table>
+    <div class="ct">
+        <button onclick="location.href='?do=que'">返回</button>
+    </div>
+</fieldset>
 
-<script>
- 
-</script>

@@ -10,7 +10,11 @@ class db{
     function __construct($table)
     {
         $this->table=$table;
-        $this->pdo=new PDO($this->dsn,"root","");
+        $this->pdo=NEW PDO($this->dsn,"root","");
+    }
+
+    function q($sql){
+        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     function to_str($array){
@@ -26,7 +30,7 @@ class db{
         if (is_array($id)) {
             $tmp=$this->to_str($id);
             $sql.=join(" && ",$tmp);
-        }else {
+        }else{
             $sql.="`id`=".$id;
         }
         //echo $sql;
@@ -39,7 +43,7 @@ class db{
             if (is_array($arg[0])) {
                 $tmp=$this->to_str($arg[0]);
                 $sql.=" WHERE ".join(" && ",$tmp);
-            }else {
+            }else{
                 $sql.=$arg[0];
             }
         }
@@ -55,7 +59,7 @@ class db{
         if (is_array($id)) {
             $tmp=$this->to_str($id);
             $sql.=join(" && ",$tmp);
-        }else {
+        }else{
             $sql.="`id`=".$id;
         }
         //echo $sql;
@@ -66,7 +70,7 @@ class db{
         if (isset($array['id'])) {
             $tmp=$this->to_str($array);
             $sql="UPDATE $this->table SET ".join(",",$tmp)." WHERE `id`=".$array['id'];
-        }else {
+        }else{
             $sql="INSERT INTO $this->table (`".join("`, `",array_keys($array))."`) VALUES ('".join("','",$array)."')";
         }
         //echo $sql;
@@ -79,7 +83,7 @@ class db{
             if (is_array($arg[0])) {
                 $tmp=$this->to_str($arg[0]);
                 $sql.=" WHERE ".join(" && ",$tmp);
-            }else {
+            }else{
                 $sql.=$arg[0];
             }
         }
@@ -91,7 +95,6 @@ class db{
     }
 }
 
-
 function dd($array){
     echo "<pre>";
     print_r($array);
@@ -102,23 +105,24 @@ function to($url){
     header("location:".$url);
 }
 
-$user=new db('user');
 $total=new db('total');
-$que=new db('que');
+$user=new db('user');
 $news=new db('news');
+$que=new db('que');
 $log=new db('log');
 
 $today=date("Y-m-d");
+
 if (!isset($_SESSION['log'])) {
-    if ($total->math('count','id',['date'=>$today])>0) {
-        $log=$total->find(['date'=>$today]);
-        $log['total']++;
+    $chk_day=$total->math('count','id',['date'=>$today]);
+    if ($chk_day>0) {
+        $data=$total->find(['date'=>$today]);
+        $data['total']++;
     }else {
-        $log=['date'=>$today,'total'=>1];
+        $data=['date'=>$today,'total'=>1];
     }
-    $total->save($log);
+    $total->save($data);
     $_SESSION['log']=1;
 }
-
 
 ?>
