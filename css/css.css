@@ -117,7 +117,7 @@ input:active,button:active,.button:active,select:active,textarea:active
 }
 input[type=text],input[type=password]
 {
-	width:180px;
+	width:200px;
 }
 input:focus,button:focus,.button:focus,select:focus,textarea:focus
 {
@@ -298,6 +298,9 @@ cursor:default;
 	margin:auto;
 }
 
+.red{
+	color: #F00;
+}
 
 .flex{
 	display: flex;
@@ -312,11 +315,8 @@ cursor:default;
 	align-items: center;
 }
 
-.float_r{
-	float:right;
-}
-.float_l{
-	float:left;
+.bg{
+	background: #bbb;
 }
 
 .w5{
@@ -334,8 +334,14 @@ cursor:default;
 .w25{
 	width: 25%;
 }
-.w30{
-	width: 30%;
+.w335{
+	width: 335%;
+}
+.w35{
+	width: 35%;
+}
+.w40{
+	width: 40%;
 }
 .w45{
 	width: 45%;
@@ -352,17 +358,17 @@ cursor:default;
 .w80{
 	width: 80%;
 }
-.w90{
-	width: 90%;
-}
 .w100{
 	width: 100%;
 }
 
-.mg_at{
-	margin: 0 auto;
+.float_l{
+	float: left;
+}
+.float_r{
+	float: right;
 }
 
-.red{
-	color: #f00;
+.mg{
+	margin: 0 auto;
 }

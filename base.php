@@ -10,11 +10,7 @@ class db{
     function __construct($table)
     {
         $this->table=$table;
-        $this->pdo=NEW PDO($this->dsn,"root","");
-    }
-
-    function q($sql){
-        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        $this->pdo=new PDO($this->dsn,"root","");
     }
 
     function to_str($array){
@@ -25,12 +21,16 @@ class db{
         return $tmp;
     }
 
+    function q($sql){
+        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     function find($id){
         $sql="SELECT * FROM $this->table WHERE ";
         if (is_array($id)) {
             $tmp=$this->to_str($id);
             $sql.=join(" && ",$tmp);
-        }else{
+        }else {
             $sql.="`id`=".$id;
         }
         //echo $sql;
@@ -43,11 +43,11 @@ class db{
             if (is_array($arg[0])) {
                 $tmp=$this->to_str($arg[0]);
                 $sql.=" WHERE ".join(" && ",$tmp);
-            }else{
+            }else {
                 $sql.=$arg[0];
             }
         }
-        if (isset($arg[1])) {
+        if (isset($arg[1])){
             $sql.=$arg[1];
         }
         //echo $sql;
@@ -59,7 +59,7 @@ class db{
         if (is_array($id)) {
             $tmp=$this->to_str($id);
             $sql.=join(" && ",$tmp);
-        }else{
+        }else {
             $sql.="`id`=".$id;
         }
         //echo $sql;
@@ -70,7 +70,7 @@ class db{
         if (isset($array['id'])) {
             $tmp=$this->to_str($array);
             $sql="UPDATE $this->table SET ".join(",",$tmp)." WHERE `id`=".$array['id'];
-        }else{
+        }else {
             $sql="INSERT INTO $this->table (`".join("`, `",array_keys($array))."`) VALUES ('".join("','",$array)."')";
         }
         //echo $sql;
@@ -83,11 +83,11 @@ class db{
             if (is_array($arg[0])) {
                 $tmp=$this->to_str($arg[0]);
                 $sql.=" WHERE ".join(" && ",$tmp);
-            }else{
+            }else {
                 $sql.=$arg[0];
             }
         }
-        if (isset($arg[1])) {
+        if (isset($arg[1])){
             $sql.=$arg[1];
         }
         //echo $sql;
@@ -105,24 +105,23 @@ function to($url){
     header("location:".$url);
 }
 
-$total=new db('total');
 $user=new db('user');
+$total=new db('total');
 $news=new db('news');
-$que=new db('que');
 $log=new db('log');
+$que=new db('que');
 
 $today=date("Y-m-d");
 
 if (!isset($_SESSION['log'])) {
     $chk_day=$total->math('count','id',['date'=>$today]);
     if ($chk_day>0) {
-        $data=$total->find(['date'=>$today]);
-        $data['total']++;
+        $lg=$total->find(['date'=>$today]);
+        $lg['total']++;
     }else {
-        $data=['date'=>$today,'total'=>1];
+        $lg=['date'=>$today,'total'=>1];
     }
-    $total->save($data);
+    $total->save($lg);
     $_SESSION['log']=1;
 }
-
 ?>

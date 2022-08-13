@@ -1,10 +1,10 @@
 <?php
 include "../base.php";
 
+$subject=$que->find($_POST['parent']);
 $opt=$que->find($_POST['id']);
-$subject=$que->find(['id'=>$opt['parent']]);
-$opt['count']++;
+
 $subject['count']++;
-$que->save($opt);
+$opt['count']++;
 $que->save($subject);
-echo $subject['id'];
+$que->save($opt);

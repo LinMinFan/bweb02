@@ -2,5 +2,8 @@
 include "../base.php";
 
 
-echo $news->find(['id'=>$_POST['id']])['text'];
 
+$nn=$news->find(['id'=>$_POST['id']]);
+?>
+
+<span><?=$nn['text'];?></span>
