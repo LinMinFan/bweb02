@@ -13,16 +13,16 @@ class db{
         $this->pdo=new PDO($this->dsn,"root","");
     }
 
+    function q($sql){
+        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     function to_str($array){
         $tmp=[];
         foreach ($array as $key => $value) {
             $tmp[]="`$key`='$value'";
         }
         return $tmp;
-    }
-
-    function q($sql){
-        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     function find($id){
@@ -42,12 +42,12 @@ class db{
         if (isset($arg[0])) {
             if (is_array($arg[0])) {
                 $tmp=$this->to_str($arg[0]);
-                $sql.=" WHERE ".join(" && ",$tmp);
+                $sql.="WHERE ".join(" && ",$tmp);
             }else {
                 $sql.=$arg[0];
             }
         }
-        if (isset($arg[1])){
+        if (isset($arg[1])) {
             $sql.=$arg[1];
         }
         //echo $sql;
@@ -69,9 +69,9 @@ class db{
     function save($array){
         if (isset($array['id'])) {
             $tmp=$this->to_str($array);
-            $sql="UPDATE $this->table SET ".join(",",$tmp)." WHERE `id`=".$array['id'];
-        }else {
-            $sql="INSERT INTO $this->table (`".join("`, `",array_keys($array))."`) VALUES ('".join("','",$array)."')";
+            $sql="UPDATE $this->table SET ".join(" , ",$tmp)."  WHERE `id`=".$array['id'];
+        }else{
+            $sql="INSERT INTO $this->table(`".join("`, `",array_keys($array))."`) VALUES ('".join("','",$array)."')";
         }
         //echo $sql;
         return $this->pdo->exec($sql);
@@ -82,22 +82,23 @@ class db{
         if (isset($arg[0])) {
             if (is_array($arg[0])) {
                 $tmp=$this->to_str($arg[0]);
-                $sql.=" WHERE ".join(" && ",$tmp);
+                $sql.="WHERE ".join(" && ",$tmp);
             }else {
                 $sql.=$arg[0];
             }
         }
-        if (isset($arg[1])){
+        if (isset($arg[1])) {
             $sql.=$arg[1];
         }
         //echo $sql;
         return $this->pdo->query($sql)->fetchColumn();
     }
+
 }
 
 function dd($array){
     echo "<pre>";
-    print_r($array);
+    echo print_r($array);
     echo "</pre>";
 }
 
@@ -105,23 +106,24 @@ function to($url){
     header("location:".$url);
 }
 
-$user=new db('user');
 $total=new db('total');
+$user=new db('user');
 $news=new db('news');
-$log=new db('log');
 $que=new db('que');
+$log=new db('log');
 
 $today=date("Y-m-d");
 
 if (!isset($_SESSION['log'])) {
     $chk_day=$total->math('count','id',['date'=>$today]);
     if ($chk_day>0) {
-        $lg=$total->find(['date'=>$today]);
-        $lg['total']++;
-    }else {
-        $lg=['date'=>$today,'total'=>1];
+        $vist=$total->find(['date'=>$today]);
+        $vist['total']++;
+    }else{
+        $vist=['date'=>$today,'total'=>1];
     }
-    $total->save($lg);
+    $total->save($vist);
     $_SESSION['log']=1;
 }
+
 ?>
