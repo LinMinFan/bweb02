@@ -1,18 +1,18 @@
 <fieldset class="w60 mg">
     <legend>會員登入</legend>
-    <table class="w100">
-            <tr>
-                <td class="clo w45">帳號</td>
-                <td>
-                    <input type="text" name="" id="acc">
-                </td>
-            </tr>
-            <tr>
-                <td class="clo w45">密碼</td>
-                <td>
-                    <input type="password" name="" id="pw">
-                </td>
-            </tr>
+    <table class="w100 mg">
+        <tr>
+            <td class="clo w45">帳號</td>
+            <td class="w45">
+                <input type="text" name="" id="acc">
+            </td>
+        </tr>
+        <tr>
+            <td class="clo w45">密碼</td>
+            <td class="w45">
+                <input type="password" name="" id="pw">
+            </td>
+        </tr>
     </table>
     <div>
         <span class="float_l">
@@ -27,7 +27,6 @@
 </fieldset>
 
 <script>
-
 function login(acc,pw){
     $.post("./api/login.php",{acc,pw},(res)=>{
         if (res==1) {
@@ -36,12 +35,11 @@ function login(acc,pw){
             alert("密碼錯誤");
         }else {
             if (acc=="admin") {
-                location.href="./back.php"
+                location.href="./back.php";
             }else {
-                location.href="./index.php"
+                location.href="./index.php";
             }
         }
     })
 }
-
 </script>

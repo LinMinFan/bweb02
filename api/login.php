@@ -8,8 +8,8 @@ if ($chk_acc>0) {
     if ($chk_pw>0) {
         $_SESSION['acc']=$_POST['acc'];
     }else {
-        echo 2;
+        echo "2";
     }
 }else {
-    echo 1;
+    echo "1";
 }

@@ -2,6 +2,7 @@
 $do=$_GET['do']??"main";
 include "./base.php";
 ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- saved from url=(0039) -->
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -18,7 +19,6 @@ include "./base.php";
 <div id="alerr" style="background:rgba(51,51,51,0.8); color:#FFF; min-height:100px; width:300px; position:fixed; display:none; z-index:9999; overflow:auto;">
 	<pre id="ssaa"></pre>
 </div>
-<iframe name="back" style="display:none;"></iframe>
 	<div id="all">
     	<div id="title">
         <?=date("m 月 d 日 l");?> | 今日瀏覽: <?=$total->find(['date'=>$today])['total'];?> | 累積瀏覽: <?=$total->math('sum','total');?>
@@ -38,12 +38,12 @@ include "./base.php";
             <div class="hal" id="main">
             	<div>
             		<marquee class="w80">請民眾踴躍投稿電子報，讓電子報成為大家相互交流、分享的園地！詳見最新文章</marquee>
-                	<span style="width:18%; display:inline-block;">
+                	<span class="float_r" style="width:18%; display:inline-block;">
 					<?php
 						if (isset($_SESSION['acc'])) {
 							if ($_SESSION['acc']=="admin") {
 								?>
-                    				<span class="float_r">歡迎，<?=$_SESSION['acc'];?></span></span>
+									<span class="float_r">歡迎，<?=$_SESSION['acc'];?></span></span>
 									<span class="float_r">
 										<button onclick="location.href='./back.php'">管理</button>|
 										<button onclick="location.href='./api/logout.php'">登出</button>
@@ -51,24 +51,25 @@ include "./base.php";
 								<?php
 							}else {
 								?>
-								<span class="float_r">歡迎，<?=$_SESSION['acc'];?><button onclick="location.href='./api/logout.php'">登出</button></span></span>
+									<span>歡迎，<?=$_SESSION['acc'];?><button onclick="location.href='./api/logout.php'">登出</button></span></span>
 								<?php
 							}
 						}else {
 							?>
-                    			<a class="float_r" href="?do=login">會員登入</a></span>
+                    			<a href="?do=login">會員登入</a>
 							<?php
 						}
 					?>
+                    </span>
                     	<div class="">
-							<?php
-								$file="./front/$do.php";
-								if (file_exists($file)) {
-									include $file;
-								}else {
-									include "./front/main.php";
-								}
-							?>
+                		<?php
+						$file="./front/$do.php";
+						if (file_exists($file)) {
+							include $file;
+						}else {
+							include "./front/main.php";
+						}
+						?>
 						</div>
                 </div>
             </div>
