@@ -1,20 +1,20 @@
-<fieldset class="w60 mg">
+<fieldset class="w50 mg">
     <legend>會員登入</legend>
-    <table class="w100 mg">
+    <table class="w100">
         <tr>
-            <td class="clo w45">帳號</td>
-            <td class="w45">
+            <td class="clo w50">帳號</td>
+            <td class="w50">
                 <input type="text" name="" id="acc">
             </td>
         </tr>
         <tr>
-            <td class="clo w45">密碼</td>
-            <td class="w45">
+            <td class="clo w50">密碼</td>
+            <td class="w50">
                 <input type="password" name="" id="pw">
             </td>
         </tr>
     </table>
-    <div>
+    <div class="ct w100 ">
         <span class="float_l">
             <button onclick="login($('#acc').val(),$('#pw').val())">登入</button>
             <button onclick="$('#acc').val(''),$('#pw').val('')">清除</button>
@@ -27,19 +27,21 @@
 </fieldset>
 
 <script>
-function login(acc,pw){
-    $.post("./api/login.php",{acc,pw},(res)=>{
-        if (res==1) {
-            alert("查無帳號");
-        }else if(res==2){
-            alert("密碼錯誤");
-        }else {
-            if (acc=="admin") {
-                location.href="./back.php";
-            }else {
-                location.href="./index.php";
+    function login(acc,pw){
+        $.post("./api/login.php",{acc,pw},(res=>{
+            if (res==1) {
+                alert("查無帳號");
+                $('#acc').val(''),$('#pw').val('')
+            }else if(res==2){
+                alert("密碼錯誤");
+                $('#acc').val(''),$('#pw').val('')
+            }else{
+                if (acc=='admin') {
+                    location.href="./back.php";
+                }else{
+                    location.href="./index.php";
+                }
             }
-        }
-    })
-}
+        }))
+    }
 </script>

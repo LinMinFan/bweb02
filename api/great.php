@@ -1,23 +1,18 @@
 <?php
 include "../base.php";
-
+$good=$news->find($_POST['id']);
 switch ($_POST['text']) {
     case '讚':
-        $row=['user'=>$_SESSION['acc'],'news'=>$_POST['id']];
-        $log->save($row);
-        $data=$news->find($_POST['id']);
-        $data['count']++;
+        $log->save(['new'=>$_POST['id'],'user'=>$_SESSION['acc']]);
+        $good['good']++;
         break;
     case '收回讚':
-        $log->del(['user'=>$_SESSION['acc'],'news'=>$_POST['id']]);
-        $data=$news->find($_POST['id']);
-        $data['count']--;
+        $log->del(['new'=>$_POST['id'],'user'=>$_SESSION['acc']]);
+        $good['good']--;
         break;
     
     default:
         # code...
         break;
 }
-$news->save($data);
-?>
-
+$news->save($good);

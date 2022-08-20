@@ -36,13 +36,13 @@ class db{
         //echo $sql;
         return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
     }
-
+    
     function all(...$arg){
         $sql="SELECT * FROM $this->table ";
         if (isset($arg[0])) {
             if (is_array($arg[0])) {
                 $tmp=$this->to_str($arg[0]);
-                $sql.=" WHERE ".join(" && ",$tmp);
+                $sql.="WHERE ".join(" && ",$tmp);
             }else {
                 $sql.=$arg[0];
             }
@@ -53,7 +53,7 @@ class db{
         //echo $sql;
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    
     function del($id){
         $sql="DELETE FROM $this->table WHERE ";
         if (is_array($id)) {
@@ -71,7 +71,7 @@ class db{
             $tmp=$this->to_str($array);
             $sql="UPDATE $this->table SET ".join(",",$tmp)." WHERE `id`=".$array['id'];
         }else {
-            $sql="INSERT INTO $this->table (`".join("`, `",array_keys($array))."`) VALUES ('".join("','",$array)."')";
+            $sql="INSERT INTO $this->table(`".join("`, `",array_keys($array))."`) VALUES ('".join("','",$array)."')";
         }
         //echo $sql;
         return $this->pdo->exec($sql);
@@ -82,7 +82,7 @@ class db{
         if (isset($arg[0])) {
             if (is_array($arg[0])) {
                 $tmp=$this->to_str($arg[0]);
-                $sql.=" WHERE ".join(" && ",$tmp);
+                $sql.="WHERE ".join(" && ",$tmp);
             }else {
                 $sql.=$arg[0];
             }
@@ -93,7 +93,9 @@ class db{
         //echo $sql;
         return $this->pdo->query($sql)->fetchColumn();
     }
+
 }
+
 
 function dd($array){
     echo "<pre>";
@@ -105,23 +107,28 @@ function to($url){
     header("location:".$url);
 }
 
+$users=new db('users');
 $total=new db('total');
-$user=new db('user');
 $news=new db('news');
 $que=new db('que');
 $log=new db('log');
 
+$sh=['sh'=>1];
 $today=date("Y-m-d");
 
 if (!isset($_SESSION['log'])) {
-    $chk_day=$total->math('count','id',['date'=>$today]);
-    if ($chk_day>0) {
-        $vist=$total->find(['date'=>$today]);
-        $vist['total']++;
+    $chk_d=$total->math('count','id',['date'=>$today]);
+    if ($chk_d>0) {
+        $log=$total->find(['date'=>$today]);
+        $log['total']++;
     }else {
-        $vist =['date'=>$today,'total'=>1];
+        $log=[];
+        $log['date']=$today;
+        $log['total']=1;
     }
-    $total->save($vist);
+    $total->save($log);
     $_SESSION['log']=1;
 }
+
+
 ?>

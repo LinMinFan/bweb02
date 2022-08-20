@@ -1,36 +1,36 @@
 <?php
 $parent=$_GET['id'];
 $subject=$que->find($parent);
-$opts=$que->all(['parent'=>$parent])
+$opts=$que->all(['parent'=>$parent]);
 ?>
-
-<fieldset class="w80 mg">
-    <legend>目前位置 : 首頁 > 問卷調查 > <?=$subject['text'];?></legend>
+<fieldset class="w90">
+    <legend>目前位置：首頁 > 問卷調查 > <span><?=$subject['text'];?></span></legend>
     <h3><?=$subject['text'];?></h3>
     <table class="w100">
-        
         <?php
             foreach ($opts as $key => $opt) {
                 ?>
                     <tr>
-                        <td class="w5 ct">
-                            <input type="radio" name="opt" value="<?=$opt['id'];?>">
+                        <td>
+                            <input type="radio" name="vote" value="<?=$opt['id'];?>">
                         </td>
-                        <td class="w80"><?=$opt['text'];?></td>
-                       
+                        <td>
+                            <?=$opt['text'];?>
+                        </td>
                     </tr>
                 <?php
             }
         ?>
     </table>
     <div class="ct">
-        <button onclick="vote($('input:checked').val(),<?=$parent;?>)">我要投票</button>
+        <button onclick="vote(<?=$parent;?>,$('input:checked').val())">我要投票</button>
     </div>
 </fieldset>
 
 <script>
-    function vote(opt,parent){
-        $.post("./api/vote.php",{opt,parent})
-        location.href="?do=result&id="+parent;
+    function vote(parent,opt){
+        $.post("./api/vote.php",{parent,opt},()=>{
+            location.href="?do=result&id="+parent;
+        })
     }
 </script>
