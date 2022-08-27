@@ -1,46 +1,36 @@
 <?php
-$parent=$_GET['id'];
-$subject=$que->find($parent);
-$opts=$que->all(['parent'=>$parent]);
+$main=$que->find($_GET['id']);
 ?>
 <style>
-    .res_bg{
-        background: #ccc;
-        height: 30px;
+    .bg{
+        background: #ddd;
     }
-    .res_cent{
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-    }
+
 </style>
-<fieldset class="w90">
-    <legend>目前位置：首頁 > 問卷調查 > <span><?=$subject['text'];?></span></legend>
-    <h3><?=$subject['text'];?></h3>
-    <table class="w100">
+<fieldset class="w90 mg">
+    <legend>目前位置：首頁 > 問卷調查 > <?=$main['text'];?></legend>
         <?php
-            foreach ($opts as $key => $opt) {
-                $s_count=($subject['count']==0)?"1":$subject['count'];
-                $cent=round(($opt['count']/$s_count),2)*100;
+            foreach ($que->all(['parent'=>$main['id']]) as $key => $sub) {
+                $dnm=($main['total']==0)?1:$main['total'];
+                $cent=round(($sub['total']/$dnm),2)*100;
                 ?>
+                <table class="w100">
                     <tr>
-                        <td class="w40">
-                            <?=$opt['text'];?>
-                        </td>
-                        <td class="w50 pos_r res_box">
-                            <div class="res_bg" style="width:<?=$cent;?>%;"></div>
-                            <div class="pos_a res_cent"><?=$opt['count'];?>票(<?=$cent;?>%)</div>
+                        <td class="w45"><?=$sub['text'];?></td>
+                        <td class="w45 pos_r">
+                            <div class="bg" style="height:30px; width:<?=$cent;?>%"></div>
+                            <span class="pos_a pos_ct">
+                                <?=$sub['total']?>票(<?=$cent;?>%)
+                            </span>
                         </td>
                     </tr>
+                </table>
                 <?php
             }
         ?>
-    </table>
-    <div class="ct">
-    <button onclick="location.href='?do=que'">返回</button>
-    </div>
+        <div class="ct">
+            <button onclick="location.href='?do=que'">返回</button>
+        </div>
+    
 </fieldset>
 
-<script>
-
-</script>

@@ -1,36 +1,20 @@
 <?php
-$parent=$_GET['id'];
-$subject=$que->find($parent);
-$opts=$que->all(['parent'=>$parent]);
+$main=$que->find($_GET['id']);
 ?>
-<fieldset class="w90">
-    <legend>目前位置：首頁 > 問卷調查 > <span><?=$subject['text'];?></span></legend>
-    <h3><?=$subject['text'];?></h3>
-    <table class="w100">
+<fieldset class="w90 mg">
+    <legend>目前位置：首頁 > 問卷調查 > <?=$main['text'];?></legend>
+    <form action="./api/vote.php?id=<?=$main['id'];?>" method="post">
         <?php
-            foreach ($opts as $key => $opt) {
+            foreach ($que->all(['parent'=>$main['id']]) as $key => $sub) {
                 ?>
-                    <tr>
-                        <td>
-                            <input type="radio" name="vote" value="<?=$opt['id'];?>">
-                        </td>
-                        <td>
-                            <?=$opt['text'];?>
-                        </td>
-                    </tr>
+                <p><input type="radio" name="vote" value="<?=$sub['id'];?>"><?=$sub['text'];?></p>
                 <?php
             }
         ?>
-    </table>
-    <div class="ct">
-        <button onclick="vote(<?=$parent;?>,$('input:checked').val())">我要投票</button>
-    </div>
+        <div class="ct">
+            <input type="submit" value="我要投票">
+        </div>
+    </form>
+    
 </fieldset>
 
-<script>
-    function vote(parent,opt){
-        $.post("./api/vote.php",{parent,opt},()=>{
-            location.href="?do=result&id="+parent;
-        })
-    }
-</script>

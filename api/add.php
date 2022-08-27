@@ -1,11 +1,17 @@
 <?php
 include "../base.php";
-$do=$_GET['do'];
-
-$$do->save(['text'=>$_POST['subject'],'parent'=>0,'count'=>0]);
-$parent=$$do->find(['text'=>$_POST['subject']])['id'];
-foreach ($_POST['opt'] as $key => $opt) {
-    $$do->save(['text'=>$opt,'parent'=>$parent,'count'=>0]);
+$main=[];
+$main['text']=$_POST['text'];
+$main['parent']=0;
+$main['total']=0;
+${$_GET['do']}->save($main);
+$id=${$_GET['do']}->find(['text'=>$_POST['text']])['id'];
+foreach ($_POST['text2'] as $key => $text2) {
+    $sub=[];
+    $sub['text']=$text2;
+    $sub['parent']=$id;
+    $sub['total']=0;
+    ${$_GET['do']}->save($sub);
 }
 
-to("../back.php?do=$do");
+to("../back.php?do={$_GET['do']}");

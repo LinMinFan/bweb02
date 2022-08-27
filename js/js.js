@@ -19,3 +19,14 @@ function good(id,type,user)
 		}
 	})
 }
+
+function del(table,id){
+	$.post("./api/del.php",{table,id},()=>{
+		location.reload();
+	})
+}
+function goods(goods,id){
+	$.post("./api/goods.php",{goods,id},()=>{
+		location.reload();
+	})
+}

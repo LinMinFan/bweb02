@@ -1,10 +1,11 @@
 <?php
 include "../base.php";
 
-$parent=$que->find($_POST['parent']);
-$opt=$que->find($_POST['opt']);
-$parent['count']++;
-$opt['count']++;
+$main=$que->find($_GET['id']);
+$sub=$que->find($_POST['vote']);
+$main['total']++;
+$sub['total']++;
+$que->save($main);
+$que->save($sub);
 
-$que->save($parent);
-$que->save($opt);
+to("../index.php?do=result&id={$_GET['id']}");

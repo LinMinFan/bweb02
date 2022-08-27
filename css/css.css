@@ -31,7 +31,7 @@ a:hover
 }
 #mm
 {
-	height:530px;
+	height:520px;
 }
 #all
 {
@@ -56,7 +56,7 @@ a:hover
 	padding:2px;
 	background:url(../icon/02B04.png) repeat-y;
 	/*background-size:100% auto;*/
-	height:530px;
+	height:520px;
 	display:inline-block;
 	vertical-align:top;
 	position:relative;
@@ -70,7 +70,7 @@ a:hover
 {
 	display:inline-block;
 	width:78%;
-	height:530px;
+	height:520px;
 	padding:4px;
 	border:solid 1px #000000;
 	overflow:auto;
@@ -117,7 +117,7 @@ input:active,button:active,.button:active,select:active,textarea:active
 }
 input[type=text],input[type=password]
 {
-	width:200px;
+	width:150px;
 }
 input:focus,button:focus,.button:focus,select:focus,textarea:focus
 {
@@ -297,13 +297,28 @@ cursor:default;
 	right:0px;
 	margin:auto;
 }
-
+.pos_r{
+	position: relative;
+}
+.pos_a{
+	position: absolute;
+}
+.pos_ct{
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+}
 .flex{
 	display: flex;
 }
-
+.blo{
+	display: block;
+}
 .flex_jc{
 	justify-content: center;
+}
+.flex_jb{
+	justify-content: space-between;
 }
 .flex_ja{
 	justify-content: space-around;
@@ -311,25 +326,50 @@ cursor:default;
 .flex_ac{
 	align-items: center;
 }
-
-.mg {
-	margin: 0 auto;
+.flex_w{
+	flex-wrap: wrap;
 }
-
 .float_l{
 	float: left;
 }
 .float_r{
 	float: right;
 }
-.pos_r{
-	position: relative;
+.mg{
+	margin: 0 auto;
 }
-.pos_a{
-	position: absolute;
+.h0{
+	height: 0;
 }
-.red{
-	color: #f00;
+.h50px{
+	height: 50px;
+}
+.h100px{
+	height: 100px;
+}
+.h150px{
+	height: 150px;
+}
+.h200px{
+	height: 200px;
+}
+.h250px{
+	height: 250px;
+}
+.h300px{
+	height: 300px;
+}
+.h350px{
+	height: 350px;
+}
+.h400px{
+	height: 400px;
+}
+.h450px{
+	height: 450px;
+}
+.h500px{
+	height: 500px;
 }
 .w5{
 	width: 5%;
@@ -375,4 +415,7 @@ cursor:default;
 }
 .w100{
 	width: 100%;
+}
+.red{
+	color: #f00;
 }
