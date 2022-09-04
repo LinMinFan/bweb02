@@ -1,17 +1,18 @@
 <?php
+$do=$_GET['do'];
 include "../base.php";
 $main=[];
 $main['text']=$_POST['text'];
 $main['parent']=0;
 $main['total']=0;
-${$_GET['do']}->save($main);
-$id=${$_GET['do']}->find(['text'=>$_POST['text']])['id'];
-foreach ($_POST['text2'] as $key => $text2) {
-    $sub=[];
-    $sub['text']=$text2;
+$ques->save($main);
+$id=$ques->find(['text'=>$_POST['text']])['id'];
+$sub=[];
+foreach ($_POST['opt'] as $key => $opt) {
+    $sub['text']=$opt;
     $sub['parent']=$id;
     $sub['total']=0;
-    ${$_GET['do']}->save($sub);
+    $ques->save($sub);
 }
 
-to("../back.php?do={$_GET['do']}");
+to("../back.php?do={$do}");

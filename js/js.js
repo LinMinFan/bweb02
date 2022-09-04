@@ -19,14 +19,23 @@ function good(id,type,user)
 		}
 	})
 }
-
-function del(table,id){
-	$.post("./api/del.php",{table,id},()=>{
-		location.reload();
-	})
+function sh(table,id,sh){
+    $.post("./api/sh.php",{table,id,sh},()=>{
+        location.reload()
+    })
 }
-function goods(goods,id){
-	$.post("./api/goods.php",{goods,id},()=>{
-		location.reload();
-	})
+function del(table,id){
+    $.post("./api/del.php",{table,id},()=>{
+        location.reload()
+    })
+}
+
+function front(url){
+    location.href=`./index.php?do=${url}`;
+}
+function back(url){
+    location.href=`./back.php?do=${url}`;
+}
+function reload(){
+	location.reload();
 }

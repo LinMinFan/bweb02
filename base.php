@@ -2,7 +2,7 @@
 session_start();
 date_default_timezone_set("Asia/Taipei");
 
-class db{
+class DB{
     protected $table;
     protected $pdo;
     protected $dsn="mysql:host=localhost;charset=utf8;dbname=bweb02";
@@ -21,22 +21,17 @@ class db{
         return $tmp;
     }
 
-    function q($sql){
-        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     function find($id){
         $sql="SELECT * FROM $this->table WHERE ";
         if (is_array($id)) {
             $tmp=$this->to_str($id);
             $sql.=join(" && ",$tmp);
         }else {
-            $sql.="`id`=".$id;
+            $sql.="`id`={$id}";
         }
         //echo $sql;
         return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
     }
-    
     function all(...$arg){
         $sql="SELECT * FROM $this->table ";
         if (isset($arg[0])) {
@@ -53,30 +48,27 @@ class db{
         //echo $sql;
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
-    
     function del($id){
         $sql="DELETE FROM $this->table WHERE ";
         if (is_array($id)) {
             $tmp=$this->to_str($id);
             $sql.=join(" && ",$tmp);
         }else {
-            $sql.="`id`=".$id;
+            $sql.="`id`={$id}";
         }
         //echo $sql;
         return $this->pdo->exec($sql);
     }
-
     function save($array){
         if (isset($array['id'])) {
             $tmp=$this->to_str($array);
-            $sql="UPDATE $this->table SET ".join(",",$tmp)." WHERE `id`=".$array['id'];
-        }else {
-            $sql="INSERT INTO $this->table(`".join("`, `",array_keys($array))."`) VALUES ('".join("','",$array)."')";
+            $sql="UPDATE $this->table SET ".join(",",$tmp)."WHERE `id`={$array['id']}";
+        }else{
+            $sql="INSERT INTO $this->table (`".join("`, `",array_keys($array))."`) VALUES ('".join("','",$array)."')";
         }
         //echo $sql;
         return $this->pdo->exec($sql);
     }
-
     function math($math,$col,...$arg){
         $sql="SELECT $math($col) FROM $this->table ";
         if (isset($arg[0])) {
@@ -93,42 +85,34 @@ class db{
         //echo $sql;
         return $this->pdo->query($sql)->fetchColumn();
     }
-
 }
-
 
 function dd($array){
     echo "<pre>";
     print_r($array);
     echo "</pre>";
 }
-
 function to($url){
-    header("location:".$url);
+    header("location:{$url}");
 }
 
-$users=new db('users');
-$total=new db('total');
-$news=new db('news');
-$que=new db('que');
-$log=new db('log');
-
+$users=new DB('users');
+$logs=new DB('logs');
+$news=new DB('news');
+$ques=new DB('ques');
+$total=new DB('total');
 $sh=['sh'=>1];
 $today=date("Y-m-d");
-
 if (!isset($_SESSION['log'])) {
-    $chk_d=$total->math('count','id',['date'=>$today]);
-    if ($chk_d>0) {
-        $log=$total->find(['date'=>$today]);
-        $log['total']++;
-    }else {
-        $log=[];
-        $log['date']=$today;
-        $log['total']=1;
+    if ($total->math('count','id',['date'=>$today])>0) {
+        $data=$total->find(['date'=>$today]);
+        $data['total']++;
+    }else{
+        $data=[];
+        $data['date']=$today;
+        $data['total']=1;
     }
-    $total->save($log);
+    $total->save($data);
     $_SESSION['log']=1;
 }
-
-
 ?>

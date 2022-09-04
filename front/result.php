@@ -1,36 +1,40 @@
 <?php
-$main=$que->find($_GET['id']);
+$id=$_GET['id'];
+$main=$ques->find($id);
 ?>
 <style>
-    .bg{
-        background: #ddd;
-    }
-
+  .bg{
+    background: #ccc;
+  }
+  .st{
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+  }
 </style>
 <fieldset class="w90 mg">
     <legend>目前位置：首頁 > 問卷調查 > <?=$main['text'];?></legend>
-        <?php
-            foreach ($que->all(['parent'=>$main['id']]) as $key => $sub) {
-                $dnm=($main['total']==0)?1:$main['total'];
-                $cent=round(($sub['total']/$dnm),2)*100;
-                ?>
-                <table class="w100">
-                    <tr>
-                        <td class="w45"><?=$sub['text'];?></td>
-                        <td class="w45 pos_r">
-                            <div class="bg" style="height:30px; width:<?=$cent;?>%"></div>
-                            <span class="pos_a pos_ct">
-                                <?=$sub['total']?>票(<?=$cent;?>%)
-                            </span>
-                        </td>
-                    </tr>
-                </table>
-                <?php
-            }
+    <div class="w100 flex flex_w flex_ac">
+    <?php
+    foreach ($ques->all(['parent'=>$id]) as $key => $sub) {
+        $mt=($main['total']==0)?1:$main['total'];
+        $cent=round($sub['total']/$mt,2)*100;
         ?>
-        <div class="ct">
-            <button onclick="location.href='?do=que'">返回</button>
+        <div class="w45">
+            <?=$sub['text'];?>
         </div>
-    
+        <div class="w45 pos_r">
+            <div class="bg" style="width: <?=$cent;?>%;height:30px"></div>
+            <span class="pos_a pos_ct st"><?=$sub['total'];?>票(<?=$cent;?>%)</span>
+        </div>
+        <?php
+    }
+    ?>
+    </div>
+    <div class="ct">
+        <button onclick="front('ques')">返回</button>
+    </div>
 </fieldset>
+<script>
 
+</script>

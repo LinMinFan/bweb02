@@ -8,6 +8,6 @@ if ($users->math('count','id',['acc'=>$_POST['acc']])>0) {
     }else{
         echo 2;
     }
-}else {
+}else{
     echo 1;
 }

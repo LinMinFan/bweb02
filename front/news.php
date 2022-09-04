@@ -2,39 +2,39 @@
     <legend>目前位置：首頁 > 最新文章區</legend>
     <table class="w100">
         <tr>
-            <td class="w35 ct">標題:</td>
-            <td class="w35 ct">內容:</td>
-            <td class="w30 ct"></td>
+            <td class="w40 clo">標題</td>
+            <td class="w40">內容</td>
+            <td></td>
         </tr>
         <?php
         $p=$_GET['p']??1;
+        $countN=$news->math('count','id',$sh);
         $div=5;
-        $count=$news->math('count','id',$sh);
-        $pages=ceil($count/$div);
+        $pages=ceil($countN/$div);
         $start=($p-1)*$div;
         $pre=($p-1>0)?$p-1:1;
         $next=($p+1<=$pages)?$p+1:$pages;
-        foreach ($news->all($sh," limit $start,$div") as $key => $data){
+        foreach ($news->all($sh," limit $start,$div") as $key => $nn) {
             ?>
-                <tr>
-                <td class="w35 clo ssaa"><?=$data['title'];?></td>
-                <td class="w35 ct">
-                    <span><?=mb_substr($data['text'],0,10);?>...</span>
-                    <span class="all" style="display:none;"><?=$data['text'];?></span>
+            <tr>
+                <td class="w40 clo ns_t"><?=$nn['title'];?></td>
+                <td class="w40 ns_c">
+                    <?=mb_substr($nn['text'],0,20);?>...
+                    <span class="dpn all"><?=$nn['text'];?></span>
                 </td>
-                <td class="w30 ct">
+                <td>
                     <?php
-                        if (isset($_SESSION['acc'])) {
-                            if ($log->math('count','id',['user'=>$_SESSION['acc'],'news'=>$data['id']])>0) {
+                    if (isset($_SESSION['acc'])) {
+                        if ($logs->math('count','id',['user'=>$_SESSION['acc'],'news'=>$nn['id']])>0) {
                             ?>
-                            <a href="javascript:goods(1,<?=$data['id'];?>)">收回讚</a>
+                            <a href="javascript:goods(<?=$nn['id'];?>,0)">收回讚</a>
                             <?php
-                            }else{
-                                ?>
-                                <a href="javascript:goods(0,<?=$data['id'];?>)">讚</a>
-                                <?php 
-                            }
+                        }else{
+                            ?>
+                            <a href="javascript:goods(<?=$nn['id'];?>,1)">讚</a>
+                            <?php
                         }
+                    }
                     ?>
                 </td>
             </tr>
@@ -45,18 +45,23 @@
     <div class="ct">
         <a href="?do=<?=$do;?>&p=<?=$pre;?>"><</a>
         <?php
-        for ($i=1; $i <= $pages ; $i++) { 
+        for ($i=1; $i <= $pages; $i++) { 
             ?>
-                <a href="?do=<?=$do;?>&p=<?=$i;?>" <?=($i==$p)?"style=''font-size:20px":"";?>><?=$i;?></a>
+            <a href="?do=<?=$do;?>&p=<?=$i;?>" <?=($p==$i)?"class='fs24'":"";?>><?=$i;?></a>
             <?php
         }
         ?>
         <a href="?do=<?=$do;?>&p=<?=$next;?>">></a>
     </div>
 </fieldset>
-
 <script>
-$('.ssaa').on('click',function(){
+   $('.ns_t').on('click',function(){
     $(this).next().children().toggle();
-})
+   })
+
+   function goods(id,good){
+    $.post("./api/goods.php",{id,good},()=>{
+        reload();
+    })
+   }
 </script>

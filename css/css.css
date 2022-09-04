@@ -31,7 +31,7 @@ a:hover
 }
 #mm
 {
-	height:520px;
+	height:530px;
 }
 #all
 {
@@ -56,7 +56,7 @@ a:hover
 	padding:2px;
 	background:url(../icon/02B04.png) repeat-y;
 	/*background-size:100% auto;*/
-	height:520px;
+	height:530px;
 	display:inline-block;
 	vertical-align:top;
 	position:relative;
@@ -70,7 +70,7 @@ a:hover
 {
 	display:inline-block;
 	width:78%;
-	height:520px;
+	height:530px;
 	padding:4px;
 	border:solid 1px #000000;
 	overflow:auto;
@@ -297,22 +297,17 @@ cursor:default;
 	right:0px;
 	margin:auto;
 }
-.pos_r{
-	position: relative;
+.blo{
+	display: block;
 }
-.pos_a{
-	position: absolute;
-}
-.pos_ct{
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%,-50%);
+.dpn{
+	display: none;
 }
 .flex{
 	display: flex;
 }
-.blo{
-	display: block;
+.flex_w{
+	flex-wrap: wrap;
 }
 .flex_jc{
 	justify-content: center;
@@ -326,9 +321,6 @@ cursor:default;
 .flex_ac{
 	align-items: center;
 }
-.flex_w{
-	flex-wrap: wrap;
-}
 .float_l{
 	float: left;
 }
@@ -338,37 +330,47 @@ cursor:default;
 .mg{
 	margin: 0 auto;
 }
-.h0{
-	height: 0;
+.pos_r{
+	position: relative;
 }
-.h50px{
+.pos_a{
+	position: absolute;
+}
+.pos_ct{
+	left: 50%;
+	transform: translateX(-50%);
+}
+.h0{
+	height: 0px;
+}
+.h50{
 	height: 50px;
 }
-.h100px{
+.h100{
 	height: 100px;
 }
-.h150px{
+.h150{
 	height: 150px;
 }
-.h200px{
+.h200{
 	height: 200px;
 }
-.h250px{
+.h250{
 	height: 250px;
 }
-.h300px{
+.h300{
 	height: 300px;
 }
-.h350px{
+.h350{
 	height: 350px;
 }
-.h400px{
+.h400{
 	height: 400px;
 }
-.h450px{
+.h450{
 	height: 450px;
 }
-.h500px{
+.h500{
 	height: 500px;
 }
 .w5{
@@ -416,6 +418,12 @@ cursor:default;
 .w100{
 	width: 100%;
 }
-.red{
-	color: #f00;
+.oy_s{
+	overflow-y: scroll;
+}
+.fs12{
+	font-size: 12px;
+}
+.fs24{
+	font-size: 24px;
 }

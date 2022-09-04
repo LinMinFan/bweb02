@@ -1,13 +1,13 @@
 <?php
 include "../base.php";
 $data=$news->find($_POST['id']);
-switch ($_POST['goods']) {
-    case 1:
-        $log->del(['user'=>$_SESSION['acc'],'news'=>$_POST['id']]);
+switch ($_POST['good']) {
+    case 0:
+        $logs->del(['user'=>$_SESSION['acc'],'news'=>$_POST['id']]);
         $data['goods']--;
         break;
-    case 0:
-        $log->save(['user'=>$_SESSION['acc'],'news'=>$_POST['id']]);
+    case 1:
+        $logs->save(['user'=>$_SESSION['acc'],'news'=>$_POST['id']]);
         $data['goods']++;
         break;
     
@@ -15,5 +15,4 @@ switch ($_POST['goods']) {
         
         break;
 }
-
 $news->save($data);
