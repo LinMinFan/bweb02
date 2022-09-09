@@ -1,25 +1,27 @@
 <?php
-$id=$_GET['id'];
-$main=$ques->find($id);
+$qm=$que->find($_GET['id']);
 ?>
-<fieldset class="w90 mg">
-    <legend>目前位置：首頁 > 問卷調查 > <?=$main['text'];?></legend>
-    <form action="./api/vote.php?id=<?=$id;?>" method="POST">
-    <?php
-    foreach ($ques->all(['parent'=>$id]) as $key => $sub) {
-        ?>
-        <div>
-            <input type="radio" name="opt" value="<?=$sub['id'];?>">
-            <?=$sub['text'];?>
-        </div>
-        <?php
-    }
+<fieldset class="w80 mg ">
+    <legend>目前位置：首頁 > 問卷調查 > <?=$qm['text'];?> </legend>
+    <h3><?=$qm['text'];?></h3>
+<?php
+foreach ($que->all(['parent'=>$qm['id']]) as $key => $qs) {
     ?>
-    <div class="ct">
-        <input type="submit" value="我要投票">
+    <div>
+        <input type="radio" name="vote" id="" value="<?=$qs['id'];?>">
+        <?=$qs['text'];?>
     </div>
-    </form>    
+    <?php
+}
+?>
+<div class="ct">
+    <button onclick="vote(<?=$qm['id'];?>,$('input:checked').val())">我要投票</button>
+</div>
 </fieldset>
 <script>
-
+function vote(qm,qs){
+    $.post("./api/vote.php",{qm,qs},()=>{
+        ff('result&id='+qm);
+    })
+}
 </script>

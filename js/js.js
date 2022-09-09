@@ -19,23 +19,3 @@ function good(id,type,user)
 		}
 	})
 }
-function sh(table,id,sh){
-    $.post("./api/sh.php",{table,id,sh},()=>{
-        location.reload()
-    })
-}
-function del(table,id){
-    $.post("./api/del.php",{table,id},()=>{
-        location.reload()
-    })
-}
-
-function front(url){
-    location.href=`./index.php?do=${url}`;
-}
-function back(url){
-    location.href=`./back.php?do=${url}`;
-}
-function reload(){
-	location.reload();
-}

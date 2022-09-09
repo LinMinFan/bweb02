@@ -1,6 +1,6 @@
 <?php
-$do=$_GET['do'];
 include "../base.php";
+$do=$_GET['do'];
 if (!empty($_POST['id'])) {
     foreach ($_POST['id'] as $key => $id) {
         if (isset($_POST['del']) && in_array($id,$_POST['del'])) {
@@ -20,4 +20,4 @@ if (!empty($_POST['id'])) {
         }
     }
 }
-to("../back.php?do={$do}");
+to("../back.php?do=$do");

@@ -2,7 +2,7 @@
 session_start();
 date_default_timezone_set("Asia/Taipei");
 
-class DB{
+class Db{
     protected $table;
     protected $pdo;
     protected $dsn="mysql:host=localhost;charset=utf8;dbname=bweb02";
@@ -20,13 +20,12 @@ class DB{
         }
         return $tmp;
     }
-
     function find($id){
         $sql="SELECT * FROM $this->table WHERE ";
         if (is_array($id)) {
             $tmp=$this->to_str($id);
             $sql.=join(" && ",$tmp);
-        }else {
+        }else{
             $sql.="`id`={$id}";
         }
         //echo $sql;
@@ -38,7 +37,7 @@ class DB{
             if (is_array($arg[0])) {
                 $tmp=$this->to_str($arg[0]);
                 $sql.="WHERE ".join(" && ",$tmp);
-            }else {
+            }else{
                 $sql.=$arg[0];
             }
         }
@@ -53,7 +52,7 @@ class DB{
         if (is_array($id)) {
             $tmp=$this->to_str($id);
             $sql.=join(" && ",$tmp);
-        }else {
+        }else{
             $sql.="`id`={$id}";
         }
         //echo $sql;
@@ -62,7 +61,7 @@ class DB{
     function save($array){
         if (isset($array['id'])) {
             $tmp=$this->to_str($array);
-            $sql="UPDATE $this->table SET ".join(",",$tmp)."WHERE `id`={$array['id']}";
+            $sql="UPDATE $this->table SET ".join(",",$tmp)." WHERE `id`={$array['id']}";
         }else{
             $sql="INSERT INTO $this->table (`".join("`, `",array_keys($array))."`) VALUES ('".join("','",$array)."')";
         }
@@ -75,7 +74,7 @@ class DB{
             if (is_array($arg[0])) {
                 $tmp=$this->to_str($arg[0]);
                 $sql.="WHERE ".join(" && ",$tmp);
-            }else {
+            }else{
                 $sql.=$arg[0];
             }
         }
@@ -87,32 +86,153 @@ class DB{
     }
 }
 
+class Str{
+    protected $table;
+    public $hd;
+    public $td;
+    public $abt;
+    public $ahd;
+    public $atd;
+    public $ubt;
+    public $uhd;
+    public $utd;
+    function __construct($table)
+    {
+        $this->table=$table;
+        switch ($this->table) {
+            case 'title':
+                    $this->hd="網站標題管理";
+                    $this->td=['網站標題','替代文字'];
+                    $this->abt="新增網站標題圖片";
+                    $this->ahd="新增標題區圖片";
+                    $this->atd=['標題區圖片:','標題區替代文字:'];
+                    $this->ubt="更新圖片";
+                    $this->uhd="更新圖片";
+                    $this->utd="圖片:";
+                break;
+            case 'ad':
+                    $this->hd="動態文字廣告管理";
+                    $this->td="動態文字廣告";
+                    $this->abt="新增動態文字廣告";
+                    $this->ahd="新增動態文字廣告";
+                    $this->atd="動態文字廣告:";
+                    $this->ubt="";
+                    $this->uhd="";
+                    $this->utd="";
+                break;
+            case 'mvim':
+                    $this->hd="動畫圖片管理";
+                    $this->td="動畫圖片";
+                    $this->abt="新增動畫圖片";
+                    $this->ahd="新增動畫圖片";
+                    $this->atd="動畫圖片";
+                    $this->ubt="更換動畫";
+                    $this->uhd="更換動畫";
+                    $this->utd="動畫:";
+                break;
+            case 'image':
+                    $this->hd="校園映像資料管理";
+                    $this->td="校園映像資料圖片";
+                    $this->abt="新增校園映像圖片";
+                    $this->ahd="新增校園映像圖片";
+                    $this->atd="校園映像圖片:";
+                    $this->ubt="更換圖片";
+                    $this->uhd="更換圖片";
+                    $this->utd="圖片:";
+                break;
+            case 'total':
+                    $this->hd="進站總人數管理";
+                    $this->td="進站總人數:";
+                    $this->abt="";
+                    $this->ahd="";
+                    $this->atd="";
+                    $this->ubt="";
+                    $this->uhd="";
+                    $this->utd="";
+                break;
+            case 'bottom':
+                    $this->hd="頁尾版權資料管理";
+                    $this->td="頁尾版權資料:";
+                    $this->abt="";
+                    $this->ahd="";
+                    $this->atd="";
+                    $this->ubt="";
+                    $this->uhd="";
+                    $this->utd="";
+                break;
+            case 'news':
+                    $this->hd="最新消息資料管理";
+                    $this->td="最新消息資料內容";
+                    $this->abt="新增最新消息資料";
+                    $this->ahd="新增最新消息資料";
+                    $this->atd="最新消息資料:";
+                    $this->ubt="";
+                    $this->uhd="";
+                    $this->utd="";
+                break;
+            case 'admin':
+                    $this->hd="管理者帳號管理";
+                    $this->td=['帳號','密碼'];
+                    $this->abt="新增管理者帳號";
+                    $this->ahd="新增管理者帳號";
+                    $this->atd=['帳號:','密碼:','確認密碼:'];
+                    $this->ubt="";
+                    $this->uhd="";
+                    $this->utd="";
+                break;
+            case 'menu':
+                    $this->hd="選單管理";
+                    $this->td=['主選單名稱','選單連結網址','次選單數'];
+                    $this->abt="新增主選單";
+                    $this->ahd="新增主選單";
+                    $this->atd=['主選單名稱','選單連結網址'];
+                    $this->ubt="編輯次選單";
+                    $this->uhd="編輯次選單";
+                    $this->utd=['次選單名稱','次選單連結網址'];
+                break;
+            
+            
+            default:
+                break;
+        }
+    }
+}
+
 function dd($array){
     echo "<pre>";
     print_r($array);
     echo "</pre>";
 }
 function to($url){
-    header("location:{$url}");
+    header("location:".$url);
 }
 
-$users=new DB('users');
-$logs=new DB('logs');
-$news=new DB('news');
-$ques=new DB('ques');
-$total=new DB('total');
+$total=new Db('total');
+$user=new Db('user');
+$que=new Db('que');
+$log=new Db('log');
+$news=new Db('news');
+
+
 $sh=['sh'=>1];
 $today=date("Y-m-d");
+$start_day=date("Y-m-d",strtotime("-2 days"));
+$level_icon=[];
+$ss_times=[];
+$pr_href=['1'=>'prds','2'=>'orders','3'=>'mem','4'=>'bot','5'=>'news'];
+$pr_text=['1'=>'商品分類與管理','2'=>'訂單管理','3'=>'會員管理','4'=>'頁尾版權管理','5'=>'最新消息管理'];
+//echo serialize([1,2,3,4,5]);
+//echo serialize([1=>1]);
 if (!isset($_SESSION['log'])) {
     if ($total->math('count','id',['date'=>$today])>0) {
-        $data=$total->find(['date'=>$today]);
-        $data['total']++;
+        $log=$total->find(['date'=>$today]);
+        $log['total']++;
     }else{
-        $data=[];
-        $data['date']=$today;
-        $data['total']=1;
+        $log=[];
+        $log=['date'=>$today,'total'=>1];
     }
-    $total->save($data);
+    $total->save($log);
     $_SESSION['log']=1;
 }
+
 ?>

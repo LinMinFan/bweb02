@@ -1,32 +1,49 @@
-<fieldset class="w80 mg">
-    <legend>目前位置：首頁 > 分類網誌 > <span class="po_title"></span></legend>
-    <div class="w100 flex flex_ja flex_ac">
-        <fieldset class="w30">
-            <legend>分類網誌</legend>
-            <a href="javascript:get_list('健康新知',1)" class="blo">健康新知</a>
-            <a href="javascript:get_list('菸害防治',2)" class="blo">菸害防治</a>
-            <a href="javascript:get_list('癌症防治',3)" class="blo">癌症防治</a>
-            <a href="javascript:get_list('慢性病防治',4)" class="blo">慢性病防治</a>
-        </fieldset>
-        <fieldset class="w60">
-            <legend>文章列表</legend>
-            <div class="po_content">
+<fieldset class="w80 mg flex">
+    <legend>目前位置：首頁 > 分類網誌 > <span class="tt"></span></legend>
+    <fieldset class="w30">
+        <legend>分類網誌</legend>
+        <a href="javascript:t_list(1)" class="blo">健康新知</a>
+        <a href="javascript:t_list(2)" class="blo">菸害防治</a>
+        <a href="javascript:t_list(3)" class="blo">癌症防治</a>
+        <a href="javascript:t_list(4)" class="blo">慢性病防治</a>
+    </fieldset>
+    <fieldset class="w60">
+        <legend>文章列表</legend>
+        <div class="tc">
 
-            </div>
-        </fieldset>
-    </div>
+        </div>
+    </fieldset>
+
 </fieldset>
 <script>
-    get_list('健康新知',1);
-    function get_list(text,type){
-        $('.po_title').text(text);
-        $.post("./api/get_list.php",{text,type},(res)=>{
-            $('.po_content').html(res);
+    t_list(1);
+    function t_list(type){
+        let text;
+        switch (type) {
+            case 1:
+                text="健康新知";
+                break;
+            case 2:
+                text="菸害防治";
+                break;
+            case 3:
+                text="癌症防治";
+                break;
+            case 4:
+                text="慢性病防治";
+                break;
+        
+            default:
+                break;
+        }
+        $('.tt').text(text);
+        $('.tc').load("./api/t_list.php",{type},()=>{
+
         })
     }
-    function get_content(id){
-        $.post("./api/get_content.php",{id},(res)=>{
-            $('.po_content').html(res);
+    function t_content(id){
+        $('.tc').load("./api/t_content.php",{id},()=>{
+
         })
     }
 </script>
